@@ -3,7 +3,6 @@ namespace FluentFiles.Core.Extensions
     using FluentFiles.Core.Conversion;
     using System;
     using System.ComponentModel;
-    using System.Linq.Expressions;
 
     internal static class TypeExtensions
     {
@@ -14,7 +13,7 @@ namespace FluentFiles.Core.Extensions
 
             var converter = TypeDescriptor.GetConverter(type.Unwrap());
             return converter != null 
-                ? new TypeConverterAdapter(converter) { OverrideCanConvertTo = true }
+                ? new TypeConverterAdapter(converter)
                 : DefaultConverter.Instance;
         }
 
@@ -27,7 +26,7 @@ namespace FluentFiles.Core.Extensions
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
 
-            if (type.IsValueType && type != typeof(void))	// can't create an instance of Void
+            if (type.IsValueType && type != typeof(void))	// Can't create an instance of Void.
                 return Activator.CreateInstance(type);
 
             return null;
