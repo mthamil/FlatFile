@@ -25,19 +25,21 @@ namespace FluentFiles.Tests.FixedLength
         }
 
         [Theory]
-        [InlineData("00001Description 1            00003", 1, "Description 1", 3)]
-        [InlineData("00005Description 5            =Null", 5, "Description 5", null)]
-        public void ParserShouldReadAnyValidString(string inputString, int id, string description, int? nullableInt)
+        [InlineData("00001Description 1            00003test   ", 1, "Description 1", 3, "test")]
+        [InlineData("00005Description 5            =Nulltest   ", 5, "Description 5", null, "test")]
+        public void ParserShouldReadAnyValidString(string inputString, int id, string description, int? nullableInt, string note)
         {
             layout.WithMember(o => o.Id, set => set.WithLength(5).WithLeftPadding('0'))
                   .WithMember(o => o.Description, set => set.WithLength(25).WithRightPadding(' '))
-                  .WithMember(o => o.NullableInt, set => set.WithLength(5).AllowNull("=Null").WithLeftPadding('0'));
+                  .WithMember(o => o.NullableInt, set => set.WithLength(5).AllowNull("=Null").WithLeftPadding('0'))
+                  .WithMember(o => o.Note, set => set.WithLength(7).WithRightPadding(' '));
 
             var parsedEntity = parser.ParseLine(inputString, new TestObject());
 
             parsedEntity.Id.Should().Be(id);
             parsedEntity.Description.Should().Be(description);
             parsedEntity.NullableInt.Should().Be(nullableInt);
+            parsedEntity.Note.Should().Be(note);
         }
 
         [Theory]
@@ -216,13 +218,13 @@ namespace FluentFiles.Tests.FixedLength
                 return context.Source.ToString("X");
             }
 
-            public bool CanConvertFrom(Type type) => type == typeof(string) || type == typeof(int);
+            public bool CanConvertFrom(Type type) => type == typeof(string) || type == TargetType;
 
-            public bool CanConvertTo(Type type) => type == typeof(string) || type == typeof(int);
+            public bool CanConvertTo(Type type) => type == typeof(string) || type == TargetType;
 
-            public object ConvertFromString(string source) => Parse(new FieldParsingContext(source.AsSpan(), null));
+            public object ConvertFromString(string source) => Parse(new FieldParsingContext(source.AsSpan(), null, TargetType));
 
-            public string ConvertToString(object source) => Format(new FieldFormattingContext(source, null));
+            public string ConvertToString(object source) => Format(new FieldFormattingContext(source, null, TargetType));
         }
 #pragma warning restore CS0618 // Type or member is obsolete
 
@@ -231,6 +233,8 @@ namespace FluentFiles.Tests.FixedLength
             public int Id { get; set; }
             public string Description { get; set; }
             public int? NullableInt { get; set; }
+
+            public string Note;
 
             public int GetHashCode(TestObject obj)
             {
