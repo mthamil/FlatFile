@@ -15,13 +15,7 @@
 
         protected FieldSettingsBase(MemberInfo member)
         {
-            if (member is PropertyInfo property)
-                Type = property.PropertyType;
-            else if (member is FieldInfo field)
-                Type = field.FieldType;
-            else
-                throw new InvalidOperationException($"Invalid member: {member.DeclaringType.Name}.{member.Name}");
-
+            Type = member.MemberType();
             Member = member;
             DefaultConverter = Type.GetConverter();
             UniqueKey = $"[{member.DeclaringType.AssemblyQualifiedName}]:{member.Name}";
