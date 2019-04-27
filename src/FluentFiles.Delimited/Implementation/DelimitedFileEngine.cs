@@ -3,6 +3,7 @@ namespace FluentFiles.Delimited.Implementation
     using System;
     using System.IO;
     using System.Text;
+    using System.Threading.Tasks;
     using FluentFiles.Core;
     using FluentFiles.Core.Base;
 
@@ -71,7 +72,7 @@ namespace FluentFiles.Delimited.Implementation
         /// Writes the header.
         /// </summary>
         /// <param name="writer">The writer.</param>
-        protected override void WriteHeader(TextWriter writer)
+        protected override async Task WriteHeaderAsync(TextWriter writer)
         {
             var layoutDescriptor = _layoutDescriptor;
             if (!layoutDescriptor.HasHeader)
@@ -79,20 +80,17 @@ namespace FluentFiles.Delimited.Implementation
                 return;
             }
 
-            var fields = layoutDescriptor.Fields;
-
-            var stringBuilder = new StringBuilder();
-
-            foreach (var field in fields)
+            var headerBuilder = new StringBuilder();
+            foreach (var field in layoutDescriptor.Fields)
             {
-                stringBuilder
+                headerBuilder
                     .Append(field.Name)
                     .Append(layoutDescriptor.Delimiter);
             }
 
-            stringBuilder.Remove(stringBuilder.Length - 1, 1);
+            headerBuilder.Remove(headerBuilder.Length - 1, 1);
 
-            writer.WriteLine(stringBuilder.ToString());
+            await writer.WriteLineAsync(headerBuilder.ToString()).ConfigureAwait(false);
         }
     }
 }

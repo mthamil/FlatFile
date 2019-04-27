@@ -9,11 +9,13 @@ namespace FluentFiles.Tests.Base
     using FluentFiles.Tests.Base.Entities;
     using FluentAssertions;
     using Xunit;
+    using System.Threading.Tasks;
+    using System.Threading;
 
     public abstract class IntegrationTests<TFieldSettings, TConstructor, TLayout>
         where TLayout : ILayout<TestObject, TFieldSettings, TConstructor, TLayout>
         where TFieldSettings : IFieldSettingsContainer
-        where TConstructor : IFieldSettingsBuilder<TConstructor, TFieldSettings> 
+        where TConstructor : IFieldSettingsBuilder<TConstructor, TFieldSettings>
     {
         protected abstract TLayout Layout { get; }
 
@@ -33,32 +35,30 @@ namespace FluentFiles.Tests.Base
                 {
                     Id = i,
                     Description = "Description " + i,
-                    NullableInt = i%5 == 0 ? null : (int?) 3
+                    NullableInt = i % 5 == 0 ? null : (int?)3
                 });
             }
         }
 
         [Fact]
-        public virtual void CountOfTheObjectsAfterWriteReadShouldBeTheSame()
+        public virtual Task CountOfTheObjectsAfterWriteReadShouldBeTheSame()
         {
-            InvokeWriteTest((engine, stream) =>
+            return InvokeWriteTest((engine, stream) =>
             {
                 var objectsAfterRead = engine.Read<TestObject>(stream).ToArray();
 
                 objectsAfterRead.Should().HaveCount(Objects.Count);
-
             });
         }
 
         [Fact]
-        public virtual void AllDeclaredPropertiesOfTheObjectsAfterWriteReadShouldBeTheSame()
+        public virtual Task AllDeclaredPropertiesOfTheObjectsAfterWriteReadShouldBeTheSame()
         {
-            InvokeWriteTest((engine, stream) =>
+            return InvokeWriteTest((engine, stream) =>
             {
                 var objectsAfterRead = engine.Read<TestObject>(stream).ToList();
 
                 objectsAfterRead.Should().BeEquivalentTo(Objects, options => options.IncludingAllDeclaredProperties());
-
             });
         }
 
@@ -74,11 +74,11 @@ namespace FluentFiles.Tests.Base
             }, TestSource);
         }
 
-        protected virtual void InvokeWriteTest(Action<IFlatFileEngine, MemoryStream> action)
+        protected virtual async Task InvokeWriteTest(Action<IFlatFileEngine, MemoryStream> action, CancellationToken cancellationToken = default)
         {
             using (var memory = new MemoryStream())
             {
-                Engine.Write(memory, Objects);
+                await Engine.WriteAsync(memory, Objects, cancellationToken);
 
                 memory.Seek(0, SeekOrigin.Begin);
 

@@ -50,7 +50,7 @@ namespace FluentFiles.Benchmark
         }
 
         [Benchmark(Baseline = true)]
-        public IEnumerable<FixedSampleRecord> FileHelpers()
+        public IList<FixedSampleRecord> FileHelpers()
         {
             using (var stream = new StringReader(_records))
             {
@@ -59,7 +59,7 @@ namespace FluentFiles.Benchmark
         }
 
         [Benchmark]
-        public IEnumerable<FixedSampleRecord> FluentFiles()
+        public IList<FixedSampleRecord> FluentFiles()
         {
             using (var stream = new StringReader(_records))
             {

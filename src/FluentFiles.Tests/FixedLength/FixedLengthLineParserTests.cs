@@ -234,7 +234,7 @@ namespace FluentFiles.Tests.FixedLength
             public string Description { get; set; }
             public int? NullableInt { get; set; }
 
-            public string Note;
+            public string Note = null;
 
             public override int GetHashCode() => HashCode.Combine(Id, Description, NullableInt, Note);
 
