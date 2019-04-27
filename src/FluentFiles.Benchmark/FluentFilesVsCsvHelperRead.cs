@@ -43,21 +43,21 @@ namespace FluentFiles.Benchmark
         }
 
         [Benchmark(Baseline = true)]
-        public IEnumerable<CustomObject> CsvHelper()
+        public IList<CustomObject> CsvHelper()
         {
             using (var streamReader = new StringReader(_records))
             using (var reader = new CsvReader(streamReader, _csvConfig))
             {
-                return reader.GetRecords<CustomObject>().ToArray();
+                return reader.GetRecords<CustomObject>().ToList();
             }
         }
 
         [Benchmark]
-        public IEnumerable<CustomObject> FluentFiles()
+        public IList<CustomObject> FluentFiles()
         {
             using (var streamReader = new StringReader(_records))
             {
-                return _fluentEngine.Read<CustomObject>(streamReader).ToArray();
+                return _fluentEngine.Read<CustomObject>(streamReader).ToList();
             }
         }
     }

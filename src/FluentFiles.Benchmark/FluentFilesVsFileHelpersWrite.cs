@@ -1,13 +1,14 @@
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using AutoFixture;
+using BenchmarkDotNet.Attributes;
 using FileHelpers;
 using FluentFiles.Benchmark.Entities;
 using FluentFiles.Benchmark.Mapping;
-using FluentFiles.FixedLength.Implementation;
-using AutoFixture;
-using BenchmarkDotNet.Attributes;
-using FluentFiles.Core;
 using FluentFiles.Converters;
+using FluentFiles.Core;
+using FluentFiles.FixedLength.Implementation;
 
 namespace FluentFiles.Benchmark
 {
@@ -46,12 +47,12 @@ namespace FluentFiles.Benchmark
         }
 
         [Benchmark]
-        public void FluentFiles()
+        public async Task FluentFiles()
         {
             using (var stream = new MemoryStream())
             using (var streamWriter = new StreamWriter(stream))
             {
-                _fluentEngine.Write(streamWriter, _records);
+                await _fluentEngine.WriteAsync(streamWriter, _records).ConfigureAwait(false);
             }
         }
     }

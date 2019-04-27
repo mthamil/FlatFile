@@ -1,9 +1,9 @@
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoFixture;
 using BenchmarkDotNet.Attributes;
 using CsvHelper;
-using CsvHelper.Configuration;
 using FluentFiles.Benchmark.Entities;
 using FluentFiles.Benchmark.Mapping;
 using FluentFiles.Core;
@@ -31,7 +31,6 @@ namespace FluentFiles.Benchmark
             _fluentEngine = new DelimitedFileEngineFactory()
                 .GetEngine(new FlatFileMappingForCustomObject());
 
-
             var fixture = new Fixture();
             _records = fixture.CreateMany<CustomObject>(N).ToArray();
         }
@@ -49,12 +48,12 @@ namespace FluentFiles.Benchmark
         }
 
         [Benchmark]
-        public void FluentFiles()
+        public async Task FluentFiles()
         {
             using (var stream = new MemoryStream())
             using (var streamWriter = new StreamWriter(stream))
             {
-                _fluentEngine.Write(streamWriter, _records);
+                await _fluentEngine.WriteAsync(streamWriter, _records).ConfigureAwait(false);
             }
         }
     }

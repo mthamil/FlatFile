@@ -8,21 +8,21 @@
     /// <summary>
     /// A file engine capable of handling files with multiple types of records.
     /// </summary>
-    public interface IFlatFileMultiEngine : IFlatFileEngine
+    public interface IFlatFileMultiEngine : IFileWriter
     {
         /// <summary>
         /// Reads the specified stream.
         /// </summary>
         /// <param name="stream">The stream.</param>
         /// <param name="cancellationToken">Cancels reading a file.</param>
-        Task ReadAsync(Stream stream, CancellationToken cancellationToken = default(CancellationToken));
+        Task ReadAsync(Stream stream, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Reads the specified text reader.
         /// </summary>
         /// <param name="reader">The text reader.</param>
         /// <param name="cancellationToken">Cancels reading a file.</param>
-        Task ReadAsync(TextReader reader, CancellationToken cancellationToken = default(CancellationToken));
+        Task ReadAsync(TextReader reader, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets any records of type <typeparamref name="T"/> read by <see cref="ReadAsync(Stream, CancellationToken)"/> or <see cref="ReadAsync(TextReader, CancellationToken)"/>.

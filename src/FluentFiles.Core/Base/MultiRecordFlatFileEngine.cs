@@ -14,7 +14,7 @@
     /// </summary>
     /// <typeparam name="TFieldSettings">The type of field configuration.</typeparam>
     /// <typeparam name="TLayoutDescriptor">The type of layout descriptor.</typeparam>
-    public abstract class MultiRecordFlatFileEngine<TFieldSettings, TLayoutDescriptor> : FlatFileEngine<TFieldSettings, TLayoutDescriptor>
+    public abstract class MultiRecordFlatFileEngine<TFieldSettings, TLayoutDescriptor> : FileEngineCore<TFieldSettings, TLayoutDescriptor>
         where TFieldSettings : IFieldSettings
         where TLayoutDescriptor : ILayoutDescriptor<TFieldSettings>
     {
@@ -58,7 +58,7 @@
         /// <param name="stream">The stream.</param>
         /// <param name="cancellationToken">Cancels reading a file.</param>
         /// <exception cref="ParseLineException">Impossible to parse line</exception>
-        public Task ReadAsync(Stream stream, CancellationToken cancellationToken = default(CancellationToken))
+        public Task ReadAsync(Stream stream, CancellationToken cancellationToken = default)
         {
             return ReadAsync(new StreamReader(stream), cancellationToken);
         }
@@ -69,7 +69,7 @@
         /// <param name="reader">The text reader configured as the user wants.</param>
         /// /// <param name="cancellationToken">Cancels reading a file.</param>
         /// <exception cref="ParseLineException">Impossible to parse line</exception>
-        public Task ReadAsync(TextReader reader, CancellationToken cancellationToken = default(CancellationToken))
+        public Task ReadAsync(TextReader reader, CancellationToken cancellationToken = default)
         {
             return ReadInternalAsync(reader, cancellationToken);
         }
