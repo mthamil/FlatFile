@@ -8,6 +8,7 @@ It is a library for reading and writing fixed-width and delimited text files.
 ### Installing FluentFiles
 
 #### Installing all packages
+[![NuGet](https://img.shields.io/nuget/v/FluentFiles.svg)](https://www.nuget.org/packages/FluentFiles/)
 The following installs the [FluentFiles](https://www.nuget.org/packages/FluentFiles) metapackage that pulls in all other packages:
 
 ```sh
@@ -16,6 +17,7 @@ dotnet add package FluentFiles
 
 
 #### Installing FluentFiles.Delimited
+[![NuGet](https://img.shields.io/nuget/v/FluentFiles.Delimited.svg)](https://www.nuget.org/packages/FluentFiles.Delimited/)
 You should install [FluentFiles.Delimited with NuGet](https://www.nuget.org/packages/FluentFiles.Delimited):
 
 ```sh
@@ -23,6 +25,7 @@ dotnet add package FluentFiles.Delimited
 ```
 
 ##### Add attribute-mapping extensions
+[![NuGet](https://img.shields.io/nuget/v/FluentFiles.Delimited.Attributes.svg)](https://www.nuget.org/packages/FluentFiles.Delimited.Attributes/)
 You should install [FluentFiles.Delimited.Attributes with NuGet](https://www.nuget.org/packages/FluentFiles.Delimited.Attributes):
 
 ```sh
@@ -30,6 +33,7 @@ dotnet add package FluentFiles.Delimited.Attributes
 ```
 
 #### Installing FluentFiles.FixedLength
+[![NuGet](https://img.shields.io/nuget/v/FluentFiles.FixedLength.svg)](https://www.nuget.org/packages/FluentFiles.FixedLength/)
 You should install [FluentFiles.FixedLength with NuGet](https://www.nuget.org/packages/FluentFiles.FixedLength):
 
 ```sh
@@ -37,10 +41,19 @@ dotnet add packageFluentFiles.FixedLength
 ```
 
 ##### Add attribute-mapping extensions
+[![NuGet](https://img.shields.io/nuget/v/FluentFiles.FixedLength.Attributes.svg)](https://www.nuget.org/packages/FluentFiles.FixedLength.Attributes/)
 You should install [FluentFiles.FixedLength.Attributes with NuGet](https://www.nuget.org/packages/FluentFiles.FixedLength.Attributes):
 
 ```sh
 dotnet add package FluentFiles.FixedLength.Attributes
+```
+
+##### Add optimized .NET Core-only converters
+[![NuGet](https://img.shields.io/nuget/v/FluentFiles.Converters.svg)](https://www.nuget.org/packages/FluentFiles.Converters/)
+You should install [FluentFiles.Converters with NuGet](https://www.nuget.org/packages/FluentFiles.Converters):
+
+```sh
+dotnet add package FluentFiles.Converters
 ```
 
 These commands will download and install FluentFiles and all required dependencies.
