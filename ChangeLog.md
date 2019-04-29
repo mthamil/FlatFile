@@ -23,6 +23,10 @@
 - [#63](https://github.com/forcewake/FlatFile/issues/62) Expose `Read` and `Write` file engine methods that 
   accept `TextReader` and `TextWriter`, respectively.
 
+- Support public class fields in addition to properties.
+
+- Changed file engine write and multi-record read to be asynchronous. Single-record-type read is still synchronous for now.
+
 
 ### Bug Fixes
 - [#80](https://github.com/forcewake/FlatFile/issues/80) Problem parsing consecutive empty fields in delimited files.
