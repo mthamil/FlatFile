@@ -39,32 +39,32 @@ D20150512Standalone                     ";
             var continuations = result.GetRecords<HeaderRecordContinuation>().ToList();
 
             // Assert.
-            var header1 = parents.Single(r => r.Data == "Header");
-            header1.Should().NotBeNull("The first header record should exist");
+            var firstParent = parents.Single(r => r.Data == "Header");
+            firstParent.Should().NotBeNull();
 
-            var header2 = continuations.Single(r => r.Data == "HeaderLine2");
-            header2.Should().NotBeNull("The second header continuation record should exist");
+            var secondParent = continuations.Single(r => r.Data == "HeaderLine2");
+            secondParent.Should().NotBeNull();
 
-            var header3 = continuations.Single(r => r.Data == "HeaderLine3");
-            header3.Should().NotBeNull("The third header continuation record should exist");
+            var thirdParent = continuations.Single(r => r.Data == "HeaderLine3");
+            thirdParent.Should().NotBeNull();
 
-            header1.DetailRecords.Should().BeEmpty("It does not have any detail records");
-            header2.DetailRecords.Should().BeEmpty("It does not have any detail records");
-            header3.DetailRecords.Should().HaveCount(2, "Two detail records exist");
+            firstParent.DetailRecords.Should().BeEmpty();
+            secondParent.DetailRecords.Should().BeEmpty();
+            thirdParent.DetailRecords.Should().HaveCount(2);
 
-            var detail = header3.DetailRecords.Last();
-            detail.Should().NotBeNull("It should be parsed correctly");
-            detail.Data.Should().Be("20150512More Data", "It should preserve ordering");
+            var thirdParentChild = thirdParent.DetailRecords.Last();
+            thirdParentChild.Should().NotBeNull();
+            thirdParentChild.Data.Should().Be("20150512More Data", "It should preserve ordering");
 
-            var anotherHeader = parents.FirstOrDefault(r => r.Data == "AnotherHeader");
-            anotherHeader.Should().NotBeNull("The other header record should exist");
-            anotherHeader.DetailRecords.Should().HaveCount(1, "One detail record exists");
+            var anotherParent = parents.FirstOrDefault(r => r.Data == "AnotherHeader");
+            anotherParent.Should().NotBeNull();
+            anotherParent.DetailRecords.Should().HaveCount(1);
 
-            var anotherDetail = anotherHeader.DetailRecords.First();
-            anotherDetail.Should().NotBeNull("It should be parsed correctly");
-            anotherDetail.Data.Should().Be("20150511FooBarBaz", "It should associate the correct record");
+            var anotherChild = anotherParent.DetailRecords.First();
+            anotherChild.Should().NotBeNull();
+            anotherChild.Data.Should().Be("20150511FooBarBaz");
 
-            result.GetRecords<DetailRecord>().Should().HaveCount(1, "Only unassociated detail records should be available when calling GetRecords<T>");
+            result.GetRecords<DetailRecord>().Should().HaveCount(1, "Only unassociated detail records should be available.");
         }
 
         [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
