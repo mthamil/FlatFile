@@ -29,11 +29,12 @@ D20150512Standalone                     ";
         [Fact]
         public async Task ShouldAssociateDetailRecordsWithMasterRecord()
         {
+            ReadResult result;
             using (var reader = new StringReader(TestData))
-                await engine.ReadAsync(reader);
+                result = await engine.ReadAsync(reader);
 
-            var headers = engine.GetRecords<HeaderRecord>().ToList();
-            var continuations = engine.GetRecords<HeaderRecordContinuation>().ToList();
+            var headers = result.GetRecords<HeaderRecord>().ToList();
+            var continuations = result.GetRecords<HeaderRecordContinuation>().ToList();
 
             var header1 = headers.FirstOrDefault(r => r.Data == "Header");
             header1.Should().NotBeNull("The first header record should exist");
@@ -58,7 +59,7 @@ D20150512Standalone                     ";
             anotherDetail.Should().NotBeNull("It should be parsed correctly");
             anotherDetail.Data.Should().Be("20150511FooBarBaz", "It should associate the correct record");
 
-            engine.GetRecords<DetailRecord>().Should().HaveCount(1, "Only unassociated detail records should be available when calling GetRecords<T>");
+            result.GetRecords<DetailRecord>().Should().HaveCount(1, "Only unassociated detail records should be available when calling GetRecords<T>");
         }
 
         abstract class RecordBase

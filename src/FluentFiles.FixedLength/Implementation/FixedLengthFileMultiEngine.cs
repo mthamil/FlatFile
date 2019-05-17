@@ -9,7 +9,7 @@
     /// <summary>
     /// A fixed length file engine capable of handling files with multiple types of records.
     /// </summary>
-    public sealed class FixedLengthFileMultiEngine : MultiRecordFlatFileEngine<IFixedFieldSettingsContainer, IFixedLengthLayoutDescriptor>, IFlatFileMultiEngine
+    public sealed class FixedLengthFileMultiEngine : MultiRecordFlatFileEngine<IFixedFieldSettingsContainer, IFixedLengthLayoutDescriptor>
     {
         /// <summary>
         /// The layout descriptors for this engine.

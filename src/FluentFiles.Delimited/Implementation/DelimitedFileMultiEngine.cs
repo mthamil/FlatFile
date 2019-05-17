@@ -9,7 +9,7 @@
     /// <summary>
     /// A delimited file engine capable of handling files with multiple types of records.
     /// </summary>
-    public sealed class DelimitedFileMultiEngine : MultiRecordFlatFileEngine<IDelimitedFieldSettingsContainer, IDelimitedLayoutDescriptor>, IFlatFileMultiEngine
+    public sealed class DelimitedFileMultiEngine : MultiRecordFlatFileEngine<IDelimitedFieldSettingsContainer, IDelimitedLayoutDescriptor>
     {
         /// <summary>
         /// The layout descriptors for this engine.

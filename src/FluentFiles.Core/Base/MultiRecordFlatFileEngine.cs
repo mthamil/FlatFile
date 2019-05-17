@@ -14,14 +14,11 @@
     /// </summary>
     /// <typeparam name="TFieldSettings">The type of field configuration.</typeparam>
     /// <typeparam name="TLayoutDescriptor">The type of layout descriptor.</typeparam>
-    public abstract class MultiRecordFlatFileEngine<TFieldSettings, TLayoutDescriptor> : FileEngineCore<TFieldSettings, TLayoutDescriptor>
+    public abstract class MultiRecordFlatFileEngine<TFieldSettings, TLayoutDescriptor> : FileEngineCore<TFieldSettings, TLayoutDescriptor>, IFlatFileMultiEngine
         where TFieldSettings : IFieldSettings
         where TLayoutDescriptor : ILayoutDescriptor<TFieldSettings>
     {
-        /// <summary>
-        /// Stores the results of reading a file by record type.
-        /// </summary>
-        private readonly Dictionary<Type, IList<object>> _results;
+        private readonly IEnumerable<TLayoutDescriptor> _layoutDescriptors;
 
         /// <summary>
         /// Initializes a new instance of <see cref="MultiRecordFlatFileEngine{TFieldSettings, TLayoutDescriptor}"/>.
@@ -33,7 +30,7 @@
             FileReadErrorHandler handleEntryReadError)
                 : base(handleEntryReadError)
         {
-            _results = layoutDescriptors.ToDictionary(ld => ld.TargetType, _ => (IList<object>)new List<object>());
+            _layoutDescriptors = layoutDescriptors;
         }
 
         /// <summary>
@@ -43,22 +40,12 @@
         public bool HasHeader { get; set; }
 
         /// <summary>
-        /// Gets any records of type <typeparamref name="T" /> read by <see cref="ReadAsync(Stream, CancellationToken)"/> or <see cref="ReadAsync(TextReader, CancellationToken)"/>.
-        /// </summary>
-        /// <typeparam name="T">The type of record to retrieve.</typeparam>
-        /// <returns>Any records of type <typeparamref name="T"/> that were parsed.</returns>
-        public IEnumerable<T> GetRecords<T>() where T : class, new() =>
-            _results.TryGetValue(typeof(T), out var results)
-                ? results.Cast<T>()
-                : Enumerable.Empty<T>();
-
-        /// <summary>
         /// Reads the specified stream.
         /// </summary>
         /// <param name="stream">The stream.</param>
         /// <param name="cancellationToken">Cancels reading a file.</param>
         /// <exception cref="ParseLineException">Impossible to parse line</exception>
-        public Task ReadAsync(Stream stream, CancellationToken cancellationToken = default)
+        public Task<ReadResult> ReadAsync(Stream stream, CancellationToken cancellationToken = default)
         {
             return ReadAsync(new StreamReader(stream), cancellationToken);
         }
@@ -67,11 +54,12 @@
         /// Reads from the specified text reader.
         /// </summary>
         /// <param name="reader">The text reader configured as the user wants.</param>
-        /// /// <param name="cancellationToken">Cancels reading a file.</param>
+        /// <param name="cancellationToken">Cancels reading a file.</param>
         /// <exception cref="ParseLineException">Impossible to parse line</exception>
-        public Task ReadAsync(TextReader reader, CancellationToken cancellationToken = default)
+        public async Task<ReadResult> ReadAsync(TextReader reader, CancellationToken cancellationToken = default)
         {
-            return ReadInternalAsync(reader, cancellationToken);
+            var results = await ReadInternalAsync(reader, cancellationToken).ConfigureAwait(false);
+            return new ReadResult(results);
         }
 
         /// <summary>
@@ -96,10 +84,11 @@
         /// <param name="reader">The text reader to read.</param>
         /// /// <param name="cancellationToken">Cancels reading a file.</param>
         /// <exception cref="ParseLineException">Impossible to parse line</exception>
-        protected virtual async Task ReadInternalAsync(TextReader reader, CancellationToken cancellationToken)
+        protected virtual async Task<IReadOnlyDictionary<Type, IList<object>>> ReadInternalAsync(TextReader reader, CancellationToken cancellationToken)
         {
             string line;
             var lineNumber = 0;
+            var results = _layoutDescriptors.ToDictionary(ld => ld.TargetType, _ => (IList<object>)new List<object>());
 
             // Can't support this in a per layout manner, it has to be for the file/engine as a whole
             if (HasHeader)
@@ -147,8 +136,10 @@
                 var isDetailRecord = ProcessMasterDetail(entry);
                 if (isDetailRecord) continue;
 
-                _results[type].Add(entry);
+                results[type].Add(entry);
             }
+
+            return results;
         }
     }
 }

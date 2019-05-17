@@ -51,21 +51,22 @@ M,Second Master,00044";
         public async Task ShouldAssociateDetailRecordsWithMasterRecord()
         {
             // Act.
+            ReadResult result;
             using (var reader = new StringReader(TestData))
-                await _engine.ReadAsync(reader);
+                result = await _engine.ReadAsync(reader);
 
             // Assert.
-            var results = _engine.GetRecords<MasterRecord>().ToList();
-            results.Should().HaveCount(2, "because it should read two 'M' records");
-            results.First().Should().Be(new MasterRecord { Type = 'M', Description = "First Master", Value = 42 });
+            var parents = result.GetRecords<MasterRecord>().ToList();
+            parents.Should().HaveCount(2);
+            parents.First().Should().Be(new MasterRecord { Type = 'M', Description = "First Master", Value = 42 });
 
-            var details = results.First().DetailRecords;
-            details.Should().HaveCount(2, "because there are two 'D' records");
-            details.First().Should().Be(new DetailRecord { Type = 'D', Description = "First Detail", Date = "20150323" });
-            details.Last().Should().Be(new DetailRecord { Type = 'D', Description = "Second Detail", Date = "20160323" });
+            var children = parents.First().DetailRecords;
+            children.Should().HaveCount(2);
+            children.First().Should().Be(new DetailRecord { Type = 'D', Description = "First Detail", Date = "20150323" });
+            children.Last().Should().Be(new DetailRecord { Type = 'D', Description = "Second Detail", Date = "20160323" });
 
-            results.Last().Should().Be(new MasterRecord { Type = 'M', Description = "Second Master", Value = 44 });
-            results.Last().DetailRecords.Should().BeEmpty();
+            parents.Last().Should().Be(new MasterRecord { Type = 'M', Description = "Second Master", Value = 44 });
+            parents.Last().DetailRecords.Should().BeEmpty();
         }
 
         [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]

@@ -45,20 +45,21 @@ M,Second Master,00044";
         public async Task ShouldAssociateDetailRecordsWithMasterRecord()
         {
             // Act.
+            ReadResult result;
             using (var reader = new StringReader(TestData))
-                await _engine.ReadAsync(reader);
+                result = await _engine.ReadAsync(reader);
 
             // Assert.
-            var results = _engine.GetRecords<MasterRecord>().ToList();
-            results.Should().HaveCount(2, "because it should read two 'M' records");
-            results.First().Should().Be(new MasterRecord { Type = 'M', Description = "First Master", Value = 42 });
+            var records = result.GetRecords<MasterRecord>().ToList();
+            records.Should().HaveCount(2);
+            records.First().Should().Be(new MasterRecord { Type = 'M', Description = "First Master", Value = 42 });
 
-            var details = results.First().DetailRecords;
-            details.Should().HaveCount(2, "because there are two 'D' records");
+            var details = records.First().DetailRecords;
+            details.Should().HaveCount(2);
             details.First().Should().Be(new DetailRecord { Type = 'D', Description = "First Detail", Date = "20150323" });
             details.Last().Should().Be(new DetailRecord { Type = 'D', Description = "Second Detail", Date = "20160323" });
 
-            results.Last().Should().Be(new MasterRecord { Type = 'M', Description = "Second Master", Value = 44 });
+            records.Last().Should().Be(new MasterRecord { Type = 'M', Description = "Second Master", Value = 44 });
         }
 
         class MasterRecord : IMasterRecord

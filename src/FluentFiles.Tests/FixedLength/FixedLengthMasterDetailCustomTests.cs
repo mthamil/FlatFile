@@ -31,14 +31,15 @@ D20150512Standalone                     ";
         public async Task ShouldAssociateDetailRecordsWithMasterRecord()
         {
             // Act.
+            ReadResult result;
             using (var reader = new StringReader(TestData))
-                await engine.ReadAsync(reader);
+                result = await engine.ReadAsync(reader);
 
-            var headers = engine.GetRecords<HeaderRecord>().ToList();
-            var continuations = engine.GetRecords<HeaderRecordContinuation>().ToList();
+            var parents = result.GetRecords<HeaderRecord>().ToList();
+            var continuations = result.GetRecords<HeaderRecordContinuation>().ToList();
 
             // Assert.
-            var header1 = headers.Single(r => r.Data == "Header");
+            var header1 = parents.Single(r => r.Data == "Header");
             header1.Should().NotBeNull("The first header record should exist");
 
             var header2 = continuations.Single(r => r.Data == "HeaderLine2");
@@ -55,7 +56,7 @@ D20150512Standalone                     ";
             detail.Should().NotBeNull("It should be parsed correctly");
             detail.Data.Should().Be("20150512More Data", "It should preserve ordering");
 
-            var anotherHeader = headers.FirstOrDefault(r => r.Data == "AnotherHeader");
+            var anotherHeader = parents.FirstOrDefault(r => r.Data == "AnotherHeader");
             anotherHeader.Should().NotBeNull("The other header record should exist");
             anotherHeader.DetailRecords.Should().HaveCount(1, "One detail record exists");
 
@@ -63,7 +64,7 @@ D20150512Standalone                     ";
             anotherDetail.Should().NotBeNull("It should be parsed correctly");
             anotherDetail.Data.Should().Be("20150511FooBarBaz", "It should associate the correct record");
 
-            engine.GetRecords<DetailRecord>().Should().HaveCount(1, "Only unassociated detail records should be available when calling GetRecords<T>");
+            result.GetRecords<DetailRecord>().Should().HaveCount(1, "Only unassociated detail records should be available when calling GetRecords<T>");
         }
 
         [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]

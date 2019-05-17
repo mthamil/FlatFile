@@ -6,7 +6,7 @@
 os: Visual Studio 2017
 
 environment:  
-  major: 1
+  major: 2
   minor: 0
   patch: 0
 
