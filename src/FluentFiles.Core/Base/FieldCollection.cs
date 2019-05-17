@@ -33,7 +33,7 @@ namespace FluentFiles.Core.Base
     public class FieldCollection<TFieldSettings> : IFieldCollection<TFieldSettings>
         where TFieldSettings : IFieldSettingsContainer
     {
-        private IDictionary<string, (int Index, TFieldSettings Settings)> _fields;
+        private readonly IDictionary<string, (int Index, TFieldSettings Settings)> _fields;
 
         /// <summary>
         /// Initializes a new <see cref="FieldCollection{TFieldSettings}"/>.
