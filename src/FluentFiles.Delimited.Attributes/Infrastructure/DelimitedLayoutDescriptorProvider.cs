@@ -29,8 +29,7 @@
             var members = fileMappingType.GetTypeDescription<DelimitedFieldAttribute>();
             foreach (var member in members)
             {
-                var settings = member.Attributes.FirstOrDefault() as IDelimitedFieldSettings;
-                if (settings != null)
+                if (member.Attributes.FirstOrDefault() is IDelimitedFieldSettings settings)
                 {
                     container.AddOrUpdate(new DelimitedFieldSettings(member.Member, settings));
                 }

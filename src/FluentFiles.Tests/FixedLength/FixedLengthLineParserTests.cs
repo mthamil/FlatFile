@@ -1,16 +1,14 @@
-using Xunit;
-
 namespace FluentFiles.Tests.FixedLength
 {
+    using System;
+    using System.ComponentModel;
+    using System.Globalization;
+    using FluentAssertions;
+    using FluentFiles.Core;
     using FluentFiles.Core.Conversion;
     using FluentFiles.FixedLength;
     using FluentFiles.FixedLength.Implementation;
-    using FluentAssertions;
-    using System;
-    using System.Globalization;
-    using System.Reflection;
-    using System.ComponentModel;
-    using FluentFiles.Core;
+    using Xunit;
 
     public class FixedLengthLineParserTests
     {
@@ -240,7 +238,7 @@ namespace FluentFiles.Tests.FixedLength
 
             public bool Equals(TestObject other)
             {
-                if (ReferenceEquals(other, null))
+                if (other is null)
                 {
                     return false;
                 }

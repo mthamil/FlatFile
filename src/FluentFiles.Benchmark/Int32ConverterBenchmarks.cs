@@ -7,8 +7,8 @@ namespace FluentFiles.Benchmark
 {
     public class Int32ConverterBenchmarks
     {
-        private System.ComponentModel.Int32Converter _bclConverter = new System.ComponentModel.Int32Converter();
-        private FluentFiles.Converters.Int32Converter _spannifiedConverter = new FluentFiles.Converters.Int32Converter();
+        private readonly System.ComponentModel.Int32Converter _bclConverter = new System.ComponentModel.Int32Converter();
+        private readonly FluentFiles.Converters.Int32Converter _spannifiedConverter = new FluentFiles.Converters.Int32Converter();
 
         private string[] items;
 
