@@ -149,19 +149,14 @@ D20150512Standalone                     ";
                                                     {
                                                         if (String.IsNullOrEmpty(s) || s.Length < 1) return null;
 
-                                                        switch (s[0])
+                                                        return (s[0]) switch
                                                         {
-                                                            case 'H':
-                                                                return typeof(HeaderRecord);
-                                                            case 'M':
-                                                                return typeof(HeaderRecordContinuation);
-                                                            case 'S':
-                                                                return typeof(StandaloneRecord);
-                                                            case 'D':
-                                                                return typeof(DetailRecord);
-                                                            default:
-                                                                return null;
-                                                        }
+                                                            'H' => typeof(HeaderRecord),
+                                                            'M' => typeof(HeaderRecordContinuation),
+                                                            'S' => typeof(StandaloneRecord),
+                                                            'D' => typeof(DetailRecord),
+                                                            _ => null,
+                                                        };
                                                     },
                                                     new FixedLengthLineBuilderFactory(),
                                                     new FixedLengthLineParserFactory(),
