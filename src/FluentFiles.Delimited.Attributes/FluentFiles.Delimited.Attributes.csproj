@@ -18,7 +18,7 @@
     <RepositoryUrl>https://github.com/mthamil/FluentFiles</RepositoryUrl>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIconUrl>https://raw.githubusercontent.com/mthamil/FluentFiles/master/nuspecs/icon.png</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageTags>FluentFiles;plain;file;text;read;reader;parse;parser;schema;flat;csv;delimited;attributes</PackageTags>
   </PropertyGroup>
 
@@ -26,6 +26,10 @@
     <ProjectReference Include="..\FluentFiles.Core\FluentFiles.Core.csproj" />
     <ProjectReference Include="..\FluentFiles.Core.Attributes\FluentFiles.Core.Attributes.csproj" />
     <ProjectReference Include="..\FluentFiles.Delimited\FluentFiles.Delimited.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\icon.png" Link="icon.png" Pack="true" Visible="false" PackagePath="\" />
   </ItemGroup>
 
 </Project>
