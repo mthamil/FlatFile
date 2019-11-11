@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1</TargetFrameworks>
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -13,7 +13,7 @@
     <Description>A library for read and writing delimited text files such as CSV, etc.</Description>
     <Owners>mthamil</Owners>
     <Authors>mthamil;forcewake</Authors>
-    <Copyright>Copyright 2018</Copyright>
+    <Copyright>Copyright 2019</Copyright>
     <PackageProjectUrl>https://github.com/mthamil/FluentFiles</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mthamil/FluentFiles</RepositoryUrl>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
@@ -24,10 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FluentFiles.Core\FluentFiles.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Memory" Version="4.5.2" Condition="$(TargetFramework) == 'netstandard2.0'" />
   </ItemGroup>
   
 </Project>

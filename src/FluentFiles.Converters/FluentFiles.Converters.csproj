@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -13,7 +13,7 @@
     <Description>Provides additional field converters for FluentFiles.</Description>
     <Owners>mthamil</Owners>
     <Authors>mthamil;forcewake</Authors>
-    <Copyright>Copyright 2018</Copyright>
+    <Copyright>Copyright 2019</Copyright>
     <PackageProjectUrl>https://github.com/mthamil/FluentFiles</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mthamil/FluentFiles</RepositoryUrl>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
