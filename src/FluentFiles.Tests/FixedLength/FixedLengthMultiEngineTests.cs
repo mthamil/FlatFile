@@ -1,17 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using FluentFiles.Core;
-using FluentFiles.FixedLength;
-using FluentFiles.FixedLength.Implementation;
-using FluentAssertions;
-using Xunit;
-using System.Threading.Tasks;
-using System.Threading;
-
 namespace FluentFiles.Tests.FixedLength
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using FluentFiles.FixedLength;
+    using FluentFiles.FixedLength.Implementation;
+    using Xunit;
+
     public class FixedLengthMultiEngineTests
     {
         const string TestData =
@@ -103,9 +101,9 @@ D20150323Another Description ";
 
             public override bool Equals(object obj)
             {
-                if (ReferenceEquals(null, obj)) return false;
+                if (obj is null) return false;
                 if (ReferenceEquals(this, obj)) return true;
-                return obj.GetType() == GetType() && Equals((Record1) obj);
+                return obj.GetType() == GetType() && Equals((Record1)obj);
             }
         }
 
@@ -123,9 +121,9 @@ D20150323Another Description ";
 
             public override bool Equals(object obj)
             {
-                if (ReferenceEquals(null, obj)) return false;
+                if (obj is null) return false;
                 if (ReferenceEquals(this, obj)) return true;
-                return obj.GetType() == GetType() && Equals((Record2) obj);
+                return obj.GetType() == GetType() && Equals((Record2)obj);
             }
         }
 

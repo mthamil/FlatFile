@@ -8,8 +8,8 @@
     internal abstract class FieldSettingsBase : IFieldSettingsContainer
     {
         private IFieldValueConverter _converter;
-        private Func<object, object> _getValue;
-        private Action<object, object> _setValue;
+        private readonly Func<object, object> _getValue;
+        private readonly Action<object, object> _setValue;
 
         protected readonly IFieldValueConverter DefaultConverter;
 

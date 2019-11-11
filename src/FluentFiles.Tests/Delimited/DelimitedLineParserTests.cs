@@ -140,7 +140,7 @@ namespace FluentFiles.Tests.Delimited
 
             public bool Equals(TestObject other)
             {
-                if (ReferenceEquals(other, null))
+                if (other is null)
                 {
                     return false;
                 }

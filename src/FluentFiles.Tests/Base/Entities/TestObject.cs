@@ -21,17 +21,11 @@ namespace FluentFiles.Tests.Base.Entities
         [DelimitedField(3, NullValue = "=Null")]
         public int? NullableInt { get; set; }
 
-        public int GetHashCode(TestObject obj)
-        {
-            var idHash = Id.GetHashCode();
-            var descriptionHash = Object.ReferenceEquals(Description, null) ? 0 : Description.GetHashCode();
-            var nullableIntHash = !NullableInt.HasValue ? 0 : NullableInt.Value.GetHashCode();
-            return idHash ^ descriptionHash ^ nullableIntHash;
-        }
+        public override int GetHashCode() => HashCode.Combine(Id, Description, NullableInt);
 
         public bool Equals(TestObject other)
         {
-            if (ReferenceEquals(other, null))
+            if (other is null)
             {
                 return false;
             }

@@ -1,16 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using FluentFiles.Core;
-using FluentFiles.Delimited;
-using FluentFiles.Delimited.Implementation;
-using FluentAssertions;
-using Xunit;
-using System.Threading.Tasks;
-
 namespace FluentFiles.Tests.Delimited
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using FluentFiles.Core;
+    using FluentFiles.Delimited;
+    using FluentFiles.Delimited.Implementation;
+    using Xunit;
+
     public class DelimitedMasterDetailTests
     {
         private readonly DelimitedFileEngineFactory _factory = new DelimitedFileEngineFactory();
@@ -77,7 +77,7 @@ M,Second Master,00044";
 
             public override bool Equals(object obj)
             {
-                if (ReferenceEquals(null, obj)) return false;
+                if (obj is null) return false;
                 if (ReferenceEquals(this, obj)) return true;
                 return obj.GetType() == GetType() && Equals((MasterRecord)obj);
             }
@@ -97,7 +97,7 @@ M,Second Master,00044";
 
             public override bool Equals(object obj)
             {
-                if (ReferenceEquals(null, obj)) return false;
+                if (obj is null) return false;
                 if (ReferenceEquals(this, obj)) return true;
                 return obj.GetType() == GetType() && Equals((DetailRecord)obj);
             }

@@ -34,8 +34,7 @@ namespace FluentFiles.FixedLength.Attributes.Infrastructure
             var members = fileMappingType.GetTypeDescription<FixedLengthFieldAttribute>();
             foreach (var member in members)
             {
-                var settings = member.Attributes.FirstOrDefault() as IFixedFieldSettings;
-                if (settings != null)
+                if (member.Attributes.FirstOrDefault() is IFixedFieldSettings settings)
                 {
                     container.AddOrUpdate(new FixedFieldSettings(member.Member, settings));
                 }

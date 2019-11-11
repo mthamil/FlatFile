@@ -1,18 +1,18 @@
-using FluentAssertions;
-using FluentFiles.Core;
-using FluentFiles.Core.Base;
-using FluentFiles.Delimited.Attributes;
-using FluentFiles.Delimited.Implementation;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using Xunit;
-
 namespace FluentFiles.Tests.Delimited
 {
+    using FluentAssertions;
+    using FluentFiles.Core;
+    using FluentFiles.Core.Base;
+    using FluentFiles.Delimited.Attributes;
+    using FluentFiles.Delimited.Implementation;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Threading.Tasks;
+    using Xunit;
+
     public class DelimitedMasterDetailCustomTests
     {
         private readonly DelimitedFileEngineFactory _factory = new DelimitedFileEngineFactory();
@@ -95,7 +95,7 @@ M,Second Master,00044";
 
             public override bool Equals(object obj)
             {
-                if (ReferenceEquals(null, obj)) return false;
+                if (obj is null) return false;
                 if (ReferenceEquals(this, obj)) return true;
                 return obj.GetType() == GetType() && Equals((MasterRecord)obj);
             }
@@ -120,7 +120,7 @@ M,Second Master,00044";
 
             public override bool Equals(object obj)
             {
-                if (ReferenceEquals(null, obj)) return false;
+                if (obj is null) return false;
                 if (ReferenceEquals(this, obj)) return true;
                 return obj.GetType() == GetType() && Equals((DetailRecord)obj);
             }
