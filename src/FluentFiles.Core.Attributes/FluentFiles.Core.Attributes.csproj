@@ -13,7 +13,7 @@
     <Description>The core library for FluentFiles.*.Attributes packages.</Description>
     <Owners>mthamil</Owners>
     <Authors>mthamil;forcewake</Authors>
-    <Copyright>Copyright 2019</Copyright>
+    <Copyright>Copyright $([System.DateTime]::Now.Year)</Copyright>
     <PackageProjectUrl>https://github.com/mthamil/FluentFiles</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mthamil/FluentFiles</RepositoryUrl>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
