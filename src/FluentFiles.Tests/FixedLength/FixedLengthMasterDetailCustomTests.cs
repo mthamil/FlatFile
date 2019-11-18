@@ -147,9 +147,7 @@ D20150512Standalone                     ";
             engine = new FixedLengthFileMultiEngine(layouts,
                                                     (s, i) =>
                                                     {
-                                                        if (String.IsNullOrEmpty(s) || s.Length < 1) return null;
-
-                                                        return (s[0]) switch
+                                                        return s?.FirstOrDefault() switch
                                                         {
                                                             'H' => typeof(HeaderRecord),
                                                             'M' => typeof(HeaderRecordContinuation),

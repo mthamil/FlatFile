@@ -25,9 +25,7 @@ D20150323Another Description ";
             return new FixedLengthFileMultiEngine(new IFixedLengthLayoutDescriptor[] { new Record1Layout(), new Record2Layout() },
                                                     (line, number) => interceptor((l, n) =>
                                                     {
-                                                        if (String.IsNullOrEmpty(l) || l.Length < 1) return null;
-
-                                                        return (l[0]) switch
+                                                        return l?.FirstOrDefault() switch
                                                         {
                                                             'S' => typeof(Record1),
                                                             'D' => typeof(Record2),
