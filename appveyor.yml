@@ -30,7 +30,7 @@ install:
   - ps: cinst NuGet.CommandLine
 
 cache:
-  - C:\ProgramData\chocolatey\lib\nuget.commandline
+  #- C:\ProgramData\chocolatey\lib\nuget.commandline
 
 
 # build Configuration, i.e. Debug, Release, etc.
