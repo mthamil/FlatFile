@@ -20,7 +20,8 @@ init:
       $branchTag = "$(if ($isBranch) { $Env:APPVEYOR_REPO_BRANCH + '-' } else { $null })"
       $Env:VersionPrefix = "$($Env:major).$($Env:minor).$($Env:patch)"
       $Env:VersionSuffix = "$(if ($isCI) { $branchTag + 'CI' + $Env:APPVEYOR_BUILD_NUMBER } else { $null })"
-      appveyor UpdateBuild -Version "$($Env:VersionPrefix)$(if ($isCI) { '-' } else { $null })$($Env:VersionSuffix)"
+      $Env:SemanticVersion = "$($Env:VersionPrefix)$(if ($isCI) { '-' } else { $null })$($Env:VersionSuffix)"
+      appveyor UpdateBuild -Version $Env:SemanticVersion
 
 #---------------------------------#
 #       build configuration       #
@@ -30,7 +31,7 @@ install:
   - ps: cinst NuGet.CommandLine
 
 cache:
-  #- C:\ProgramData\chocolatey\lib\nuget.commandline
+  - C:\ProgramData\chocolatey\lib\nuget.commandline
 
 
 # build Configuration, i.e. Debug, Release, etc.
