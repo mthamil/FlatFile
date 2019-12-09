@@ -46,7 +46,7 @@ before_build:
 
 dotnet_csproj:
   patch: true
-  file: '**\*.csproj'
+  file: '**\Directory.build.props'
   file_version: $(VersionPrefix).$(APPVEYOR_BUILD_NUMBER)
 
 build:

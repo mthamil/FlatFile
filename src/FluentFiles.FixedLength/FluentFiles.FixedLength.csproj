@@ -22,10 +22,6 @@
     <PackageTags>FluentFiles;plain;file;text;read;reader;parse;parser;schema;flat;fixed;fixedLength;fixedWidth;fluent</PackageTags>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <FileVersion>1.0.0.0</FileVersion>
-  </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\FluentFiles.Core\FluentFiles.Core.csproj" />
   </ItemGroup>
