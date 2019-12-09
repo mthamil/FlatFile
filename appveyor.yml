@@ -44,6 +44,11 @@ before_build:
   - cd src
   - dotnet restore
 
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  file_version: $(VersionPrefix).$(APPVEYOR_BUILD_NUMBER)
+
 build:
   verbosity: minimal               # MSBuild verbosity level
 
