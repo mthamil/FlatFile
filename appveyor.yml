@@ -28,10 +28,12 @@ init:
 #---------------------------------#
 
 install:
-  - ps: cinst NuGet.CommandLine
+  - ps: |
+      $nugetPath = "$($Env:SYSTEMDRIVE)\Tools\NuGet"
+      (New-Object Net.WebClient).DownloadFile('https://dist.nuget.org/win-x86-commandline/latest/nuget.exe', "$($nugetPath)\nuget.exe")
 
 cache:
-  - C:\ProgramData\chocolatey\lib\nuget.commandline
+  - $nugetPath
 
 
 # build Configuration, i.e. Debug, Release, etc.
@@ -46,7 +48,7 @@ build:
   verbosity: minimal               # MSBuild verbosity level
 
 after_build:
-  - ps: C:\ProgramData\chocolatey\lib\nuget.commandline\tools\nuget pack $Env:APPVEYOR_BUILD_FOLDER\src\FluentFiles.nuspec -Properties "version=$($Env:APPVEYOR_BUILD_VERSION);year=$(Get-Date –f yyyy)"   # meta package
+  - ps: $nugetPath\nuget pack $Env:APPVEYOR_BUILD_FOLDER\src\FluentFiles.nuspec -Properties "version=$($Env:APPVEYOR_BUILD_VERSION);year=$(Get-Date –f yyyy)"   # meta package
 
 nuget:
   project_feed: true
