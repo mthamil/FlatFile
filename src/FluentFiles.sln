@@ -12,7 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{874AF7
 		..\.gitignore = ..\.gitignore
 		..\appveyor.yml = ..\appveyor.yml
 		..\CHANGELOG.md = ..\CHANGELOG.md
-		..\nuspecs\FluentFiles.nuspec = ..\nuspecs\FluentFiles.nuspec
+		Directory.build.props = Directory.build.props
+		FluentFiles.nuspec = FluentFiles.nuspec
+		icon.png = icon.png
 		..\LICENSE = ..\LICENSE
 		..\README.md = ..\README.md
 	EndProjectSection

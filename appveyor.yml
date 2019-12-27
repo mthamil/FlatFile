@@ -3,10 +3,10 @@
 #---------------------------------#
 
 # Operating system (build VM template)
-os: Visual Studio 2017
+os: Visual Studio 2019
 
 environment:  
-  major: 1
+  major: 2
   minor: 0
   patch: 0
 
@@ -20,17 +20,20 @@ init:
       $branchTag = "$(if ($isBranch) { $Env:APPVEYOR_REPO_BRANCH + '-' } else { $null })"
       $Env:VersionPrefix = "$($Env:major).$($Env:minor).$($Env:patch)"
       $Env:VersionSuffix = "$(if ($isCI) { $branchTag + 'CI' + $Env:APPVEYOR_BUILD_NUMBER } else { $null })"
-      appveyor UpdateBuild -Version "$($Env:VersionPrefix)$(if ($isCI) { '-' } else { $null })$($Env:VersionSuffix)"
+      $Env:SemanticVersion = "$($Env:VersionPrefix)$(if ($isCI) { '-' } else { $null })$($Env:VersionSuffix)"
+      appveyor UpdateBuild -Version $Env:SemanticVersion
 
 #---------------------------------#
 #       build configuration       #
 #---------------------------------#
 
 install:
-  - ps: cinst NuGet.CommandLine
+  - ps: |
+      $nugetPath = "$($Env:SYSTEMDRIVE)\Tools\NuGet"
+      (New-Object Net.WebClient).DownloadFile('https://dist.nuget.org/win-x86-commandline/latest/nuget.exe', "$($nugetPath)\nuget.exe")
 
 cache:
-  - C:\ProgramData\chocolatey\lib\nuget.commandline
+  - $nugetPath
 
 
 # build Configuration, i.e. Debug, Release, etc.
@@ -41,11 +44,18 @@ before_build:
   - cd src
   - dotnet restore
 
+dotnet_csproj:
+  patch: true
+  file: '**\Directory.build.props'
+  file_version: $(VersionPrefix).$(APPVEYOR_BUILD_NUMBER)
+
 build:
   verbosity: minimal               # MSBuild verbosity level
 
+# create meta package
 after_build:
-  - ps: C:\ProgramData\chocolatey\lib\nuget.commandline\tools\nuget pack $Env:APPVEYOR_BUILD_FOLDER\nuspecs\FluentFiles.nuspec -Properties "version=$($Env:APPVEYOR_BUILD_VERSION);year=$(Get-Date –f yyyy)"   # meta package
+  - ps: |
+      & $nugetPath\nuget.exe pack $Env:APPVEYOR_BUILD_FOLDER\src\FluentFiles.nuspec -Properties "version=$($Env:APPVEYOR_BUILD_VERSION);year=$(Get-Date –f yyyy)"   
 
 nuget:
   project_feed: true

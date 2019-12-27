@@ -29,15 +29,12 @@ D,20150323,Another Description";
                                         {
                                             if (String.IsNullOrEmpty(l) || l.Length < 1) return null;
 
-                                            switch (l[0])
+                                            return (l[0]) switch
                                             {
-                                                case 'S':
-                                                    return typeof(Record1);
-                                                case 'D':
-                                                    return typeof(Record2);
-                                                default:
-                                                    return null;
-                                            }
+                                                'S' => typeof(Record1),
+                                                'D' => typeof(Record2),
+                                                _ => null,
+                                            };
                                         }, line, number));
         }
 

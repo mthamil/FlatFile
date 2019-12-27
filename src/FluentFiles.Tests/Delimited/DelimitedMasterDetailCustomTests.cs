@@ -31,15 +31,12 @@ M,Second Master,00044";
                                         {
                                             if (String.IsNullOrEmpty(line) || line.Length < 1) return null;
 
-                                            switch (line[0])
+                                            return (line[0]) switch
                                             {
-                                                case 'M':
-                                                    return typeof(MasterRecord);
-                                                case 'D':
-                                                    return typeof(DetailRecord);
-                                                default:
-                                                    return null;
-                                            }
+                                                'M' => typeof(MasterRecord),
+                                                'D' => typeof(DetailRecord),
+                                                _ => null,
+                                            };
                                         }, 
                                         masterDetailStrategy: new DelegatingMasterDetailStrategy(
                                             x => x.GetType().GetCustomAttribute<MasterAttribute>(true) != null,

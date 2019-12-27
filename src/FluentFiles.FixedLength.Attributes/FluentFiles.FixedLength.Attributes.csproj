@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp2.1</TargetFrameworks>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -13,12 +13,12 @@
     <Description>An extension for the FluentFiles.FixedLength package that enables attribute-based configuration.</Description>
     <Owners>mthamil</Owners>
     <Authors>mthamil;forcewake</Authors>
-    <Copyright>Copyright 2018</Copyright>
+    <Copyright>Copyright $([System.DateTime]::Now.Year)</Copyright>
     <PackageProjectUrl>https://github.com/mthamil/FluentFiles</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mthamil/FluentFiles</RepositoryUrl>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIconUrl>https://raw.githubusercontent.com/mthamil/FluentFiles/master/nuspecs/icon.png</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageTags>FluentFiles;plain;file;text;read;reader;parse;parser;schema;flat;fixed;fixedLength;fixedWidth;attributes</PackageTags>
   </PropertyGroup>
 
@@ -26,6 +26,10 @@
     <ProjectReference Include="..\FluentFiles.Core\FluentFiles.Core.csproj" />
     <ProjectReference Include="..\FluentFiles.Core.Attributes\FluentFiles.Core.Attributes.csproj" />
     <ProjectReference Include="..\FluentFiles.FixedLength\FluentFiles.FixedLength.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\icon.png" Link="icon.png" Pack="true" Visible="false" PackagePath="\" />
   </ItemGroup>
 
 </Project>

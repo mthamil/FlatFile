@@ -25,17 +25,12 @@ D20150323Another Description ";
             return new FixedLengthFileMultiEngine(new IFixedLengthLayoutDescriptor[] { new Record1Layout(), new Record2Layout() },
                                                     (line, number) => interceptor((l, n) =>
                                                     {
-                                                        if (String.IsNullOrEmpty(l) || l.Length < 1) return null;
-
-                                                        switch (l[0])
+                                                        return l?.FirstOrDefault() switch
                                                         {
-                                                            case 'S':
-                                                                return typeof(Record1);
-                                                            case 'D':
-                                                                return typeof(Record2);
-                                                            default:
-                                                                return null;
-                                                        }
+                                                            'S' => typeof(Record1),
+                                                            'D' => typeof(Record2),
+                                                            _ => null,
+                                                        };
                                                     }, line, number),
                                                     new FixedLengthLineBuilderFactory(),
                                                     new FixedLengthLineParserFactory(),
