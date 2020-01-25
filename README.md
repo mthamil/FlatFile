@@ -2,6 +2,9 @@ FluentFiles
 ========
 [![Build status](https://ci.appveyor.com/api/projects/status/s52n84t6o4nr92c3?svg=true)](https://ci.appveyor.com/project/mthamil/fluentfiles)
 
+[![codecov](https://codecov.io/gh/mthamil/FluentFiles/branch/master/graph/badge.svg)](https://codecov.io/gh/mthamil/FluentFiles)
+
+
 FluentFiles is a fork of the [FlatFile](https://github.com/forcewake/FlatFile) project. 
 It is a library for reading and writing fixed-width and delimited text files.
 

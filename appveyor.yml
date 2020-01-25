@@ -10,6 +10,9 @@ environment:
   minor: 0
   patch: 0
 
+  CODECOV_TOKEN:
+    secure: ezhWLlyzocoq2iFsvljGg+ghciZmpyEUjB6rQS+ydSH3/64cCTqz8LtTwfpg1wf8
+
 
 # scripts that are called at very beginning, before repo cloning
 init:
@@ -43,6 +46,7 @@ configuration: Release
 before_build:
   - cd src
   - dotnet restore
+  - dotnet tool restore
 
 dotnet_csproj:
   patch: true
@@ -66,7 +70,10 @@ nuget:
 #---------------------------------#
 
 test_script:
-  - ps: Get-ChildItem *.Tests | % { cd $_; dotnet test --configuration $Env:CONFIGURATION --no-build; cd ..; }
+  - ps: Get-ChildItem *.Tests | % { cd $_; dotnet test --configuration $Env:CONFIGURATION --no-build /p:AltCover=true; cd ..; }
+
+after_test:
+  - ps: Get-ChildItem *.Tests | % { cd $_; dotnet codecov --file coverage.xml --token $Env:CODECOV_TOKEN; cd ..; }
 
 
 #---------------------------------#
