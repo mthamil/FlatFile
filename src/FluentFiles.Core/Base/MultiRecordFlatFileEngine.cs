@@ -30,7 +30,7 @@
         /// <param name="handleEntryReadError">The handle entry read error.</param>
         protected MultiRecordFlatFileEngine(
             IEnumerable<TLayoutDescriptor> layoutDescriptors,
-            FileReadErrorHandler handleEntryReadError)
+            FileReadErrorHandler? handleEntryReadError)
                 : base(handleEntryReadError)
         {
             _results = layoutDescriptors.ToDictionary(ld => ld.TargetType, _ => (IList<object>)new List<object>());

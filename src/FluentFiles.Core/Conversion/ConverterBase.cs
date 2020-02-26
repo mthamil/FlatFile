@@ -1,6 +1,7 @@
 namespace FluentFiles.Core.Conversion
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
 
     /// <summary>
@@ -33,7 +34,7 @@ namespace FluentFiles.Core.Conversion
         /// </summary>
         /// <param name="context">Provides information about a field parsing operation.</param>
         /// <returns>A parsed value.</returns>
-        public object Parse(in FieldParsingContext context) => ParseValue(context);
+        public object? Parse(in FieldParsingContext context) => ParseValue(context);
 
         /// <summary>
         /// Converts an object to a string.
@@ -47,6 +48,7 @@ namespace FluentFiles.Core.Conversion
         /// </summary>
         /// <param name="context">Provides information about a field parsing operation.</param>
         /// <returns>A parsed value.</returns>
+        [return: MaybeNull]
         protected abstract TValue ParseValue(in FieldParsingContext context);
 
         /// <summary>

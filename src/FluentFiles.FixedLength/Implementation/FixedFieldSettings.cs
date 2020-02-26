@@ -26,9 +26,9 @@
         public int Length { get; set; }
         public bool PadLeft { get; set; }
         public char PaddingChar { get; set; }
-        public Func<char, int, bool> SkipWhile { get; set; }
-        public Func<char, int, bool> TakeUntil { get; set; }
+        public Func<char, int, bool>? SkipWhile { get; set; }
+        public Func<char, int, bool>? TakeUntil { get; set; }
         public bool TruncateIfExceedFieldLength { get; set; }
-        public Func<string, string> StringNormalizer { get; set; }
+        public Func<string, string>? StringNormalizer { get; set; }
     }
 }

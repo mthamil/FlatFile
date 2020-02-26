@@ -35,7 +35,7 @@ namespace FluentFiles.FixedLength.Implementation
             IFixedLengthLayoutDescriptor layoutDescriptor,
             IFixedLengthLineBuilderFactory lineBuilderFactory,
             IFixedLengthLineParserFactory lineParserFactory,
-            FileReadErrorHandler handleEntryReadError = null) : base(handleEntryReadError)
+            FileReadErrorHandler? handleEntryReadError = null) : base(handleEntryReadError)
         {
             _lineBuilderFactory = lineBuilderFactory;
             _lineParserFactory = lineParserFactory;

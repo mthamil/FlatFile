@@ -13,9 +13,9 @@
     {
         private readonly MemberInfo _member;
         private bool _isNullable;
-        private string _nullValue;
-        private string _name;
-        private IFieldValueConverter _converter;
+        private string? _nullValue;
+        private string? _name;
+        private IFieldValueConverter? _converter;
 
         /// <summary>
         /// Initializes a new <see cref="DelimitedFieldSettingsBuilder"/>,
@@ -109,6 +109,7 @@
         {
             return new DelimitedFieldSettings(_member)
             {
+                Name = _name,
                 IsNullable = _isNullable,
                 NullValue = _nullValue,
                 Converter = _converter

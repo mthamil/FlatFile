@@ -11,6 +11,6 @@ namespace FluentFiles.Core
         /// <typeparam name="TRecord">The type to map.</typeparam>
         /// <param name="entity">The instance to map.</param>
         /// <returns>The formatted value of the data in <paramref name="entity"/>.</returns>
-        string BuildLine<TRecord>(TRecord entity);
+        string BuildLine<TRecord>(TRecord entity) where TRecord : notnull;
     }
 }

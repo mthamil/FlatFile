@@ -60,7 +60,7 @@ namespace FluentFiles.FixedLength.Implementation
 
             if (!_parsers.TryGetValue(descriptor.TargetType, out var parser))
             {
-                parser = descriptor.TargetType != null && _parserRegistry.TryGetValue(descriptor.TargetType, out var parserType)
+                parser = _parserRegistry.TryGetValue(descriptor.TargetType, out var parserType)
                     ? (IFixedLengthLineParser)ReflectionHelper.CreateInstance(parserType, true, descriptor)
                     : new FixedLengthLineParser(descriptor);
 
@@ -71,9 +71,9 @@ namespace FluentFiles.FixedLength.Implementation
         }
 
         /// <summary>
-        /// Registers the line parser <typeparamref name="TParser" /> for lines matching <paramref name="targetType" />.
+        /// Registers the line parser <typeparamref name="TParser"/> for lines matching <paramref name="targetType" />.
         /// </summary>
-        /// <typeparam name="TParser">The type of the t parser.</typeparam>
+        /// <typeparam name="TParser">The type of the parser.</typeparam>
         /// <param name="targetType">The target record type.</param>
         public void RegisterLineParser<TParser>(Type targetType) where TParser : IFixedLengthLineParser
         {
@@ -81,9 +81,9 @@ namespace FluentFiles.FixedLength.Implementation
         }
 
         /// <summary>
-        /// Registers the line parser <typeparamref name="TParser" /> for lines matching <paramref name="targetLayout" />.
+        /// Registers the line parser <typeparamref name="TParser"/> for lines matching <paramref name="targetLayout" />.
         /// </summary>
-        /// <typeparam name="TParser">The type of the t parser.</typeparam>
+        /// <typeparam name="TParser">The type of the parser.</typeparam>
         /// <param name="targetLayout">The target layout.</param>
         public void RegisterLineParser<TParser>(ILayoutDescriptor<IFieldSettings> targetLayout) where TParser : IFixedLengthLineParser
         {

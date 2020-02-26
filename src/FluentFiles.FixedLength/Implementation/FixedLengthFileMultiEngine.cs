@@ -52,7 +52,7 @@
             IFixedLengthLineBuilderFactory lineBuilderFactory,
             IFixedLengthLineParserFactory lineParserFactory,
             IMasterDetailStrategy masterDetailStrategy,
-            FileReadErrorHandler handleEntryReadError = null)
+            FileReadErrorHandler? handleEntryReadError = null)
                 : base(layoutDescriptors, handleEntryReadError)
         {
             _layoutDescriptors = layoutDescriptors.Select(ld => new FixedLengthImmutableLayoutDescriptor(ld))

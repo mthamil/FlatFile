@@ -26,7 +26,7 @@ namespace FluentFiles.Core.Base
         /// <summary>
         /// The last record parsed that was determined to be a master record.
         /// </summary>
-        private object _lastMasterRecord;
+        private object? _lastMasterRecord;
 
         /// <summary>
         /// Initializes a new instance of <see cref="DelegatingMasterDetailStrategy"/>.

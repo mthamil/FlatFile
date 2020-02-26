@@ -1,7 +1,7 @@
 ﻿namespace FluentFiles.Delimited.Attributes
 {
-    using FluentFiles.Core.Attributes.Base;
     using System;
+    using FluentFiles.Core.Attributes.Base;
 
     /// <summary>
     /// Configures a type as the mapping target of a delimited file record.
@@ -12,11 +12,11 @@
         /// <summary>
         /// The string separating fields of a record.
         /// </summary>
-        public string Delimiter { get; set; }
+        public string Delimiter { get; set; } = ",";
 
         /// <summary>
         /// The string used to quote fields of a record.
         /// </summary>
-        public string Quotes { get; set; }
+        public string Quotes { get; set; } = string.Empty;
     }
 }

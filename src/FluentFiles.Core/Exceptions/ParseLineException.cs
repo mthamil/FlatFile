@@ -74,7 +74,7 @@ namespace FluentFiles.Core.Exceptions
         /// <summary>
         /// The line that failed to parse.
         /// </summary>
-        public string Line { get; }
+        public string Line { get; } = string.Empty;
 
         /// <summary>
         /// The number of the line that failed to parse.

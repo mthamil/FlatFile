@@ -1,12 +1,12 @@
 ﻿namespace FluentFiles.FixedLength.Attributes
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using FluentFiles.Core;
     using FluentFiles.Core.Base;
     using FluentFiles.FixedLength.Attributes.Infrastructure;
     using FluentFiles.FixedLength.Implementation;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// Provides methods for creating file engines that can handle attribute-based configuration.
@@ -22,7 +22,7 @@
         /// <returns>A new file engine.</returns>
         public static IFlatFileEngine GetEngine<TEntity>(
             this IFlatFileEngineFactory<IFixedLengthLayoutDescriptor, IFixedFieldSettingsContainer> engineFactory,
-            FileReadErrorHandler handleEntryReadError = null)
+            FileReadErrorHandler? handleEntryReadError = null)
                 where TEntity : class, new()
         {
             var descriptorProvider = new FixedLayoutDescriptorProvider();
@@ -42,7 +42,7 @@
             this FixedLengthFileEngineFactory engineFactory,
             IEnumerable<Type> recordTypes,
             Func<string, int, Type> typeSelectorFunc,
-            FileReadErrorHandler handleEntryReadError = null)
+            FileReadErrorHandler? handleEntryReadError = null)
         {
             var descriptorProvider = new FixedLayoutDescriptorProvider();
             var descriptors = recordTypes.Select(type => descriptorProvider.GetDescriptor(type)).ToList();

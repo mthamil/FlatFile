@@ -21,7 +21,7 @@ namespace FluentFiles.Core
         /// <typeparam name="TProperty">The type of the member a field maps to.</typeparam>
         /// <param name="expression">An expression selecting the member to map to.</param>
         /// <param name="configure">An action that performs configuration of a field mapping.</param>
-        TLayout WithMember<TProperty>(Expression<Func<TTarget, TProperty>> expression, Action<TBuilder> configure = null);
+        TLayout WithMember<TProperty>(Expression<Func<TTarget, TProperty>> expression, Action<TBuilder>? configure = null);
 
         /// <summary>
         /// Indicates that a record layout contains a header.

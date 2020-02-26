@@ -14,6 +14,6 @@ namespace FluentFiles.Core
         /// <param name="line">The file line to parse.</param>
         /// <param name="entity">The instance to populate.</param>
         /// <returns>An instance of <typeparamref name="TRecord"/> populated with the parsed and transformed data from <paramref name="line"/>.</returns>
-        TRecord ParseLine<TRecord>(ReadOnlySpan<char> line, TRecord entity) where TRecord : new();
+        TRecord ParseLine<TRecord>(ReadOnlySpan<char> line, TRecord entity) where TRecord : notnull, new();
     }
 }

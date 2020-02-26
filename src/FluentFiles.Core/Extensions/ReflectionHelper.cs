@@ -19,7 +19,7 @@ namespace FluentFiles.Core.Extensions
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="cached">if set to <c>true</c> [cached].</param>
-        /// <returns>T.</returns>
+        /// <returns>An instance of type <typeparamref name="T"/>.</returns>
         public static T CreateInstance<T>(bool cached = false) => (T)CreateInstance(typeof(T), cached);
 
         /// <summary>
@@ -27,11 +27,13 @@ namespace FluentFiles.Core.Extensions
         /// </summary>
         /// <param name="targetType">Type of the target.</param>
         /// <param name="cached">if set to <c>true</c> [cached].</param>
-        /// <returns>System.Object.</returns>
-        public static object CreateInstance(Type targetType, bool cached = false) =>
-            targetType == null
-            ? null 
-            : CreateInstance(targetType.GetConstructor(Type.EmptyTypes), cached);
+        /// <returns>An instance of type <paramref name="targetType"/>.</returns>
+        public static object CreateInstance(Type targetType, bool cached = false)
+        {
+            if (targetType == null) throw new ArgumentNullException(nameof(targetType));
+
+            return CreateInstance(targetType.GetConstructor(Type.EmptyTypes), cached);
+        }
 
         /// <summary>
         /// Creates an instance of type <paramref name="targetType"/> using the specified constructor parameters.
@@ -39,42 +41,51 @@ namespace FluentFiles.Core.Extensions
         /// <param name="targetType">Type of the target.</param>
         /// <param name="cached">if set to <c>true</c> [cached].</param>
         /// <param name="parameters">The constructor arguments.</param>
-        /// <returns>System.Object.</returns>
+        /// <returns>An instance of type <paramref name="targetType"/>.</returns>
         public static object CreateInstance(Type targetType, bool cached = false, params object[] parameters)
         {
-            if (targetType == null) return null;
-            if (parameters == null || parameters.Length == 0) return CreateInstance(targetType, cached);
+            if (targetType == null) throw new ArgumentNullException(nameof(targetType));
 
-            var ctorInfo = targetType.GetConstructor(parameters.Select(a => a.GetType()).ToArray());
+            if (parameters == null || parameters.Length == 0) 
+                return CreateInstance(targetType, cached);
 
-            return CreateInstance(ctorInfo, cached, parameters);
+            var constructor = targetType.GetConstructor(parameters.Select(a => a.GetType()).ToArray());
+
+            return CreateInstance(constructor, cached, parameters);
         }
 
-        private static object CreateInstance(ConstructorInfo ctorInfo, bool cached, object[] parameters = null)
+        private static object CreateInstance(ConstructorInfo constructor, bool cached, object[]? parameters = null)
         {
-            if (ctorInfo == null) return null;
+            if (constructor == null) throw new ArgumentNullException(nameof(constructor));
+
             var hasArguments = parameters?.Length > 0;
 
             Delegate ctor;
             lock (CacheLock)
             {
-                if (!Cache.TryGetValue(ctorInfo, out ctor) || !cached)
+                if (!Cache.TryGetValue(constructor, out ctor) || !cached)
                 {
                     if (hasArguments)
                     {
-                        var ctorArgs = ctorInfo.GetParameters().Select((param, index) => Expression.Parameter(param.ParameterType, String.Format("Param{0}", index))).ToArray();
+                        var ctorArgs = constructor.GetParameters().Select((param, index) => Expression.Parameter(param.ParameterType, String.Format("Param{0}", index))).ToArray();
                         // ReSharper disable once CoVariantArrayConversion
-                        ctor = Expression.Lambda(Expression.New(ctorInfo, ctorArgs), ctorArgs).Compile();
+                        ctor = Expression.Lambda(Expression.New(constructor, ctorArgs), ctorArgs).Compile();
                     }
                     else
                     {
-                        ctor = Expression.Lambda(Expression.New(ctorInfo)).Compile();
+                        ctor = Expression.Lambda(Expression.New(constructor)).Compile();
                     }
                 }
 
-                if (cached) CacheCtor(ctorInfo, ctor);
+                if (cached) CacheCtor(constructor, ctor);
             }
             return hasArguments ? ctor.DynamicInvoke(parameters) : ctor.DynamicInvoke();
+        }
+
+        private static void CacheCtor(ConstructorInfo key, Delegate ctor) 
+        { 
+            if (!Cache.ContainsKey(key))
+                Cache.Add(key, ctor); 
         }
 
         /// <summary>
@@ -91,18 +102,16 @@ namespace FluentFiles.Core.Extensions
             return newExpression.Compile();
         }
 
-        static void CacheCtor(ConstructorInfo key, Delegate ctor) { if (!Cache.ContainsKey(key)) Cache.Add(key, ctor); }
-
         /// <summary>
         /// Creates a delegate for accessing the value of a given member.
         /// </summary>
         /// <param name="member">The member to access.</param>
-        public static Func<object, object> CreateMemberGetter(MemberInfo member)
+        public static Func<object, object?> CreateMemberGetter(MemberInfo member)
         {
             var parameter = Expression.Parameter(typeof(object));
             var memberExpression = Expression.PropertyOrField(Expression.Convert(parameter, member.DeclaringType), member.Name);
 
-            var getter = Expression.Lambda<Func<object, object>>(
+            var getter = Expression.Lambda<Func<object, object?>>(
                 memberExpression.Type.IsValueType
                     ? Expression.Convert(memberExpression, typeof(object))
                     : (Expression)memberExpression, parameter);
@@ -113,13 +122,13 @@ namespace FluentFiles.Core.Extensions
         /// Creates a delegate for assigning the value of a given member.
         /// </summary>
         /// <param name="member">The member to set.</param>
-        public static Action<object, object> CreateMemberSetter(MemberInfo member)
+        public static Action<object, object?> CreateMemberSetter(MemberInfo member)
         {
             var targetParam = Expression.Parameter(typeof(object));
             var valueParam = Expression.Parameter(typeof(object), "value");
             var memberExpression = Expression.PropertyOrField(Expression.Convert(targetParam, member.DeclaringType), member.Name);
 
-            var setter = Expression.Lambda<Action<object, object>>(
+            var setter = Expression.Lambda<Action<object, object?>>(
                 Expression.Assign(memberExpression, Expression.Convert(valueParam, memberExpression.Type)), targetParam, valueParam);
             return setter.Compile();
         }

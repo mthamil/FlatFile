@@ -26,7 +26,7 @@ namespace FluentFiles.Core.Base
         protected LayoutBase(
             IFieldSettingsBuilderFactory<TBuilder, TFieldSettings> fieldBuilderFactory,
             IFieldCollection<TFieldSettings> fieldCollection)
-                : base(fieldCollection)
+                : base(fieldCollection, typeof(TTarget))
         {
             _fieldBuilderFactory = fieldBuilderFactory;
             InstanceFactory = ReflectionHelper.CreateConstructor(TargetType);
@@ -38,7 +38,7 @@ namespace FluentFiles.Core.Base
         /// <typeparam name="TMember">The type of the member a field maps to.</typeparam>
         /// <param name="expression">An expression selecting the member to map to.</param>
         /// <param name="configure">An action that performs configuration of a field mapping.</param>
-        protected virtual void ProcessMember<TMember>(Expression<Func<TTarget, TMember>> expression, Action<TBuilder> configure)
+        protected virtual void ProcessMember<TMember>(Expression<Func<TTarget, TMember>> expression, Action<TBuilder>? configure)
         {
             var member = expression.GetMemberInfo();
             var builder = _fieldBuilderFactory.CreateBuilder<TTarget, TMember>(member);
@@ -51,12 +51,7 @@ namespace FluentFiles.Core.Base
         }
 
         /// <summary>
-        /// The type a file record maps to.
-        /// </summary>
-        public override Type TargetType { get; } = typeof(TTarget);
-
-        /// <summary>
-        /// Creates instances of <see cref="TargetType"/>.
+        /// Creates instances of <typeparamref name="TTarget"/>.
         /// </summary>
         public override Func<object> InstanceFactory { get; }
 
@@ -66,7 +61,7 @@ namespace FluentFiles.Core.Base
         /// <typeparam name="TMember">The type of the member a field maps to.</typeparam>
         /// <param name="expression">An expression selecting the member to map to.</param>
         /// <param name="configure">An action that performs configuration of a field mapping.</param>
-        public abstract TLayout WithMember<TMember>(Expression<Func<TTarget, TMember>> expression, Action<TBuilder> configure = null);
+        public abstract TLayout WithMember<TMember>(Expression<Func<TTarget, TMember>> expression, Action<TBuilder>? configure = null);
 
         /// <summary>
         /// Indicates that a record layout contains a header.

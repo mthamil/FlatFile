@@ -39,7 +39,7 @@ namespace FluentFiles.Delimited.Implementation
             IDelimitedLayoutDescriptor layoutDescriptor,
             IDelimitedLineBuilderFactory builderFactory,
             IDelimitedLineParserFactory parserFactory, 
-            FileReadErrorHandler handleEntryReadError = null)
+            FileReadErrorHandler? handleEntryReadError = null)
                 : base(handleEntryReadError)
         {
             _builderFactory = builderFactory;

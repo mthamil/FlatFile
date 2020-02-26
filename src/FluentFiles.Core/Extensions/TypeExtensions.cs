@@ -1,8 +1,8 @@
 namespace FluentFiles.Core.Extensions
 {
-    using FluentFiles.Core.Conversion;
     using System;
     using System.ComponentModel;
+    using FluentFiles.Core.Conversion;
 
     internal static class TypeExtensions
     {
@@ -21,7 +21,7 @@ namespace FluentFiles.Core.Extensions
 
         public static Type Unwrap(this Type type) => type.IsNullable() ? Nullable.GetUnderlyingType(type) : type;
 
-        public static object GetDefaultValue(this Type type)
+        public static object? GetDefaultValue(this Type type)
         {
             if (type == null)
                 throw new ArgumentNullException(nameof(type));

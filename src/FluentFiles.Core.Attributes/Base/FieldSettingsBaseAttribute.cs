@@ -18,26 +18,26 @@ namespace FluentFiles.Core.Attributes.Base
         /// <summary>
         /// Whether a field may not have a value.
         /// </summary>
-        public bool IsNullable
-        {
-            get { return !string.IsNullOrEmpty(NullValue); }
-        }
+        public bool IsNullable => !string.IsNullOrEmpty(NullValue);
 
         /// <summary>
         /// If <see cref="IFieldSettings.IsNullable" /> is true, the text that indicates the absence of a value.
         /// </summary>
-        public string NullValue { get; set; }
+        public string? NullValue { get; set; }
 
         /// <summary>
         /// A type of converter to use when transforming a field's value into its target type.
         /// </summary>
-        public Type Converter { get; set; }
+        public Type? Converter { get; set; }
 
 #pragma warning disable CS0618 // Type or member is obsolete
-        IFieldValueConverter IFieldSettings.Converter
+        IFieldValueConverter? IFieldSettings.Converter
         {
             get
             {
+                if (Converter == null)
+                    return null;
+
                 if (typeof(ITypeConverter).IsAssignableFrom(Converter))
                     return new ITypeConverterAdapter((ITypeConverter)ReflectionHelper.CreateInstance(Converter, true));
 

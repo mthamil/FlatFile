@@ -32,7 +32,7 @@ namespace FluentFiles.Core.Base
         /// <typeparam name="TRecord">The type to map.</typeparam>
         /// <param name="entity">The instance to map.</param>
         /// <returns>The formatted value of the data in <paramref name="entity"/>.</returns>
-        public abstract string BuildLine<TRecord>(TRecord entity);
+        public abstract string BuildLine<TRecord>(TRecord entity) where TRecord : notnull;
 
         /// <summary>
         /// Formats a value for writing to a file field.
@@ -40,7 +40,7 @@ namespace FluentFiles.Core.Base
         /// <param name="field">The field mapping.</param>
         /// <param name="fieldValue">The value to format.</param>
         /// <returns>The formatted field value.</returns>
-        protected virtual string GetStringValueFromField(TFieldSettings field, object fieldValue)
+        protected virtual string GetStringValueFromField(TFieldSettings field, object? fieldValue)
         {
             string lineValue = fieldValue != null
                 ? FormatField(field, fieldValue)

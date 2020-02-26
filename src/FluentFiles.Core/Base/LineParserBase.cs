@@ -34,7 +34,7 @@ namespace FluentFiles.Core.Base
         /// <param name="line">The file line to parse.</param>
         /// <param name="entity">The instance to populate.</param>
         /// <returns>An instance of <typeparamref name="TRecord"/> populated with the parsed and transformed data from <paramref name="line"/>.</returns>
-        public abstract TRecord ParseLine<TRecord>(ReadOnlySpan<char> line, TRecord entity) where TRecord : new();
+        public abstract TRecord ParseLine<TRecord>(ReadOnlySpan<char> line, TRecord entity) where TRecord : notnull, new();
 
         /// <summary>
         /// Extracts and transforms the value of a field.
@@ -42,7 +42,7 @@ namespace FluentFiles.Core.Base
         /// <param name="fieldSettings">The field mapping.</param>
         /// <param name="memberValue">The field value.</param>
         /// <returns>The parsed value of the field.</returns>
-        protected virtual object GetFieldValueFromString(TFieldSettings fieldSettings, ReadOnlySpan<char> memberValue)
+        protected virtual object? GetFieldValueFromString(TFieldSettings fieldSettings, ReadOnlySpan<char> memberValue)
         {
             if (fieldSettings.IsNullable && memberValue.Trim('"').Equals(fieldSettings.NullValue.AsSpan(), StringComparison.OrdinalIgnoreCase))
             {
@@ -63,7 +63,7 @@ namespace FluentFiles.Core.Base
         /// <returns>A pre-processed field value.</returns>
         protected virtual ReadOnlySpan<char> PreprocessFieldValue(TFieldSettings field, ReadOnlySpan<char> memberValue) => memberValue;
 
-        private static object ParseField(TFieldSettings field, ReadOnlySpan<char> source)
+        private static object? ParseField(TFieldSettings field, ReadOnlySpan<char> source)
         {
             var converter = field.Converter;
             if (converter != null && converter.CanParse(field.Type.Unwrap()))

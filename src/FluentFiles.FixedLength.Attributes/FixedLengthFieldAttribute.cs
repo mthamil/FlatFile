@@ -34,21 +34,21 @@
         /// </summary>
         public bool TruncateIfExceedFieldLength { get; set; }
 
-        Func<string, string> IFixedFieldSettings.StringNormalizer { get; }
+        Func<string, string>? IFixedFieldSettings.StringNormalizer { get; }
 
         /// <summary>
         /// A condition that, when true, indicates that the character at the given index
         /// should not be included in the field's value. Application of the predicate will stop at
         /// the first false evaluation.
         /// </summary>
-        Func<char, int, bool> IFixedFieldSettings.SkipWhile { get; }
+        Func<char, int, bool>? IFixedFieldSettings.SkipWhile { get; }
 
         /// <summary>
         /// A condition that, when true, indicates that the character at the given index
         /// should be included in the field's value. Application of the predicate will stop at
         /// the first true evaluation.
         /// </summary>
-        Func<char, int, bool> IFixedFieldSettings.TakeUntil { get; }
+        Func<char, int, bool>? IFixedFieldSettings.TakeUntil { get; }
 
         /// <summary>
         /// Initializes a new <see cref="FixedLengthFieldAttribute"/>.

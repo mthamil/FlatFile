@@ -47,7 +47,7 @@
         /// </summary>
         /// <param name="context">Provides information about a field parsing operation.</param>
         /// <returns>A parsed value.</returns>
-        object Parse(in FieldParsingContext context);
+        object? Parse(in FieldParsingContext context);
     }
 
     /// <summary>
