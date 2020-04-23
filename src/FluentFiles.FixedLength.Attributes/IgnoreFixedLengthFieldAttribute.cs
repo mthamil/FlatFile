@@ -19,6 +19,11 @@
         public int Length { get; }
 
         /// <summary>
+        /// The character to fill an ignored field with when writing.
+        /// </summary>
+        public char Filler { get; set; } = ' ';
+
+        /// <summary>
         /// Initializes a new <see cref="IgnoreFixedLengthFieldAttribute"/>.
         /// </summary>
         /// <param name="index">Where in a line the ignored section begins.</param>

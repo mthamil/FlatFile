@@ -61,13 +61,29 @@ namespace FluentFiles.FixedLength.Implementation
         }
 
         /// <summary>
-        /// Ignores a fixed width section of a record.
+        /// Ignores a fixed width section of a record. When writing, the field will be filled with spaces
+        /// by default, or an alternate character can be chosen using the configuration action.
         /// </summary>
         /// <param name="length">The length of the section to ignore.</param>
-        public IFixedLayout<TTarget> Ignore(int length)
+        /// <param name="configure">An action that can be used to further configure the ignored field.</param>
+        public IFixedLayout<TTarget> Ignore(int length, Action<IIgnoredFieldBuilder>? configure)
         {
-            FieldCollection.AddOrUpdate(new IgnoredFixedFieldSettings(length));
+            var builder = new IgnoredFieldBuilder();
+            configure?.Invoke(builder);
+
+            FieldCollection.AddOrUpdate(new IgnoredFixedFieldSettings(length, builder.Filler));
             return this;
+        }
+
+        private class IgnoredFieldBuilder : IIgnoredFieldBuilder
+        {
+            public char Filler { get; private set; } = ' ';
+
+            public IIgnoredFieldBuilder FillWith(char filler)
+            {
+                Filler = filler;
+                return this;
+            }
         }
     }
 }
