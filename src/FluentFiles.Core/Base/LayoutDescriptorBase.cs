@@ -8,7 +8,7 @@ namespace FluentFiles.Core.Base
     /// Base class for layout descriptors.
     /// </summary>
     /// <typeparam name="TFieldSettings">The type of individual field mapping.</typeparam>
-    public class LayoutDescriptorBase<TFieldSettings> : ILayoutDescriptor<TFieldSettings>
+    public abstract class LayoutDescriptorBase<TFieldSettings> : ILayoutDescriptor<TFieldSettings>
         where TFieldSettings : IFieldSettings
     {
         /// <summary>
@@ -20,19 +20,10 @@ namespace FluentFiles.Core.Base
         /// Initializes a new instance of <see cref="LayoutDescriptorBase{TFieldSettings}"/>.
         /// </summary>
         /// <param name="fieldCollection">The mapping configurations for the fields of a record.</param>
-        protected LayoutDescriptorBase(IFieldCollection<TFieldSettings> fieldCollection)
-        {
-            FieldCollection = fieldCollection;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="LayoutDescriptorBase{TFieldSettings}"/>.
-        /// </summary>
-        /// <param name="fieldCollection">The mapping configurations for the fields of a record.</param>
         /// <param name="targetType">The type a file record maps to.</param>
         public LayoutDescriptorBase(IFieldCollection<TFieldSettings> fieldCollection, Type targetType)
-            : this(fieldCollection)
         {
+            FieldCollection = fieldCollection;
             TargetType = targetType;
             InstanceFactory = ReflectionHelper.CreateConstructor(targetType);
         }
@@ -40,7 +31,7 @@ namespace FluentFiles.Core.Base
         /// <summary>
         /// The type a file record maps to.
         /// </summary>
-        public virtual Type TargetType { get; }
+        public Type TargetType { get; }
 
         /// <summary>
         /// The mapping configurations for the fields of a record.

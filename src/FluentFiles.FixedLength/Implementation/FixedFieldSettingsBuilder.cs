@@ -1,7 +1,6 @@
-using System;
-
 namespace FluentFiles.FixedLength.Implementation
 {
+    using System;
     using System.Reflection;
     using FluentFiles.Core;
     using FluentFiles.Core.Conversion;
@@ -14,15 +13,15 @@ namespace FluentFiles.FixedLength.Implementation
     {
         private readonly MemberInfo _member;
         private bool _isNullable;
-        private string _nullValue;
+        private string? _nullValue;
         private bool _truncateIfExceedFieldLength;
-        private Func<string, string> _stringNormalizer;
+        private Func<string, string>? _stringNormalizer;
         private int _length;
         private char _paddingChar;
         private bool _padLeft;
-        private Func<char, int, bool> _skipWhile;
-        private Func<char, int, bool> _takeUntil;
-        private IFieldValueConverter _converter;
+        private Func<char, int, bool>? _skipWhile;
+        private Func<char, int, bool>? _takeUntil;
+        private IFieldValueConverter? _converter;
 
         /// <summary>
         /// Initializes a new <see cref="FixedFieldSettingsBuilder"/>,

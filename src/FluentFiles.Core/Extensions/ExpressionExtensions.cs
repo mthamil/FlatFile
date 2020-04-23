@@ -24,7 +24,7 @@ namespace FluentFiles.Core.Extensions
             if (body == null)
                 throw new ArgumentNullException(nameof(body));
 
-            MemberExpression memberExpression = null;
+            MemberExpression? memberExpression = null;
             if (body.NodeType == ExpressionType.Convert)
             {
                 var unaryExpression = (UnaryExpression)body;

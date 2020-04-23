@@ -1,12 +1,12 @@
 ﻿namespace FluentFiles.Delimited.Attributes
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using FluentFiles.Core;
     using FluentFiles.Core.Base;
     using FluentFiles.Delimited.Attributes.Infrastructure;
     using FluentFiles.Delimited.Implementation;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// Provides methods for creating file engines that can handle attribute-based configuration.
@@ -22,7 +22,7 @@
         /// <returns>A new file engine.</returns>
         public static IFlatFileEngine GetEngine<TEntity>(
             this IFlatFileEngineFactory<IDelimitedLayoutDescriptor, IDelimitedFieldSettingsContainer> engineFactory,
-            FileReadErrorHandler handleEntryReadError = null)
+            FileReadErrorHandler? handleEntryReadError = null)
                 where TEntity : class, new()
         {
             var descriptorProvider = new DelimitedLayoutDescriptorProvider();
@@ -43,8 +43,8 @@
             this DelimitedFileEngineFactory engineFactory,
             IEnumerable<Type> recordTypes,
             Func<string, int, Type> typeSelectorFunc,
-            FileReadErrorHandler handleEntryReadError = null,
-            IMasterDetailStrategy masterDetailStrategy = null)
+            FileReadErrorHandler? handleEntryReadError = null,
+            IMasterDetailStrategy? masterDetailStrategy = null)
         {
             var descriptorProvider = new DelimitedLayoutDescriptorProvider();
             var descriptors = recordTypes.Select(type => descriptorProvider.GetDescriptor(type)).ToList();

@@ -44,7 +44,7 @@ namespace FluentFiles.Delimited.Implementation
         /// <param name="configure">An action that performs configuration of a field mapping.</param>
         public override IDelimitedLayout<TTarget> WithMember<TMember>(
             Expression<Func<TTarget, TMember>> expression,
-            Action<IDelimitedFieldSettingsBuilder> configure = null)
+            Action<IDelimitedFieldSettingsBuilder>? configure = null)
         {
             ProcessMember(expression, configure);
 

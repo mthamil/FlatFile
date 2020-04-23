@@ -42,7 +42,7 @@ namespace FluentFiles.FixedLength.Implementation
         /// <param name="configure">An action that performs configuration of a field mapping.</param>
         public override IFixedLayout<TTarget> WithMember<TMember>(
             Expression<Func<TTarget, TMember>> expression,
-            Action<IFixedFieldSettingsBuilder> configure = null)
+            Action<IFixedFieldSettingsBuilder>? configure = null)
         {
             ProcessMember(expression, configure);
 

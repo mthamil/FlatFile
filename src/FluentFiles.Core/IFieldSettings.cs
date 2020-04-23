@@ -22,12 +22,12 @@ namespace FluentFiles.Core
         /// <summary>
         /// If <see cref="IsNullable"/> is true, the text that indicates the absence of a value.
         /// </summary>
-        string NullValue { get; }
+        string? NullValue { get; }
 
         /// <summary>
         /// Transforms a field's value to and from its textual file representation.
         /// </summary>
-        IFieldValueConverter Converter { get; }
+        IFieldValueConverter? Converter { get; }
     }
 
     /// <summary>
@@ -43,12 +43,12 @@ namespace FluentFiles.Core
         /// <summary>
         /// Gets the value of a field for a record instance.
         /// </summary>
-        object GetValueOf(object instance);
+        object? GetValueOf(object instance);
 
         /// <summary>
         /// Sets the value of a field for a record instance.
         /// </summary>
-        void SetValueOf(object instance, object value);
+        void SetValueOf(object instance, object? value);
 
         /// <summary>
         /// The member underlying a field.

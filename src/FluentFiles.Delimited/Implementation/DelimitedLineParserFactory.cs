@@ -60,7 +60,7 @@ namespace FluentFiles.Delimited.Implementation
 
             if (!_parsers.TryGetValue(descriptor.TargetType, out var parser))
             {
-                parser = descriptor.TargetType != null && _parserRegistry.ContainsKey(descriptor.TargetType)
+                parser = _parserRegistry.ContainsKey(descriptor.TargetType)
                     ? (IDelimitedLineParser)ReflectionHelper.CreateInstance(_parserRegistry[descriptor.TargetType], true, descriptor)
                     : new DelimitedLineParser(descriptor);
 

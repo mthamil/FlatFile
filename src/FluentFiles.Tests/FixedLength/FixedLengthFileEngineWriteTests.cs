@@ -40,7 +40,7 @@ namespace FluentFiles.Tests.FixedLength
         {
             // Arrange.
             var writeCount = 0;
-            var cancellationTokenSource = new CancellationTokenSource();
+            using var cancellationTokenSource = new CancellationTokenSource();
 
             A.CallTo(() => _lineBuilder.BuildLine(A<TestRecord>.Ignored))
                 .Invokes(() =>

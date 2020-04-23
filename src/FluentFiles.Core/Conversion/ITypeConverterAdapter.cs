@@ -38,7 +38,7 @@
         /// </summary>
         /// <param name="context">Provides information about a field parsing operation.</param>
         /// <returns>A parsed value.</returns>
-        public object Parse(in FieldParsingContext context) => _converter.ConvertFromString(context.Source.ToString());
+        public object? Parse(in FieldParsingContext context) => _converter.ConvertFromString(context.Source.ToString());
 
         /// <summary>
         /// Converts an object to a string using <see cref="ITypeConverter.ConvertToString(object)"/>.

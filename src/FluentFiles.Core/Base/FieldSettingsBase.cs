@@ -1,15 +1,15 @@
 ﻿namespace FluentFiles.Core.Base
 {
-    using FluentFiles.Core.Conversion;
-    using FluentFiles.Core.Extensions;
     using System;
     using System.Reflection;
+    using FluentFiles.Core.Conversion;
+    using FluentFiles.Core.Extensions;
 
     internal abstract class FieldSettingsBase : IFieldSettingsContainer
     {
-        private IFieldValueConverter _converter;
-        private readonly Func<object, object> _getValue;
-        private readonly Action<object, object> _setValue;
+        private IFieldValueConverter? _converter;
+        private readonly Func<object, object?> _getValue;
+        private readonly Action<object, object?> _setValue;
 
         protected readonly IFieldValueConverter DefaultConverter;
 
@@ -35,9 +35,9 @@
         public string UniqueKey { get; }
         public int? Index { get; set; }
         public bool IsNullable { get; set; }
-        public string NullValue { get; set; }
+        public string? NullValue { get; set; }
 
-        public IFieldValueConverter Converter
+        public IFieldValueConverter? Converter
         {
             get => _converter ?? DefaultConverter;
             set => _converter = value;
@@ -47,8 +47,8 @@
 
         public Type Type { get; }
 
-        public object GetValueOf(object instance) => _getValue(instance);
+        public object? GetValueOf(object instance) => _getValue(instance);
 
-        public void SetValueOf(object instance, object value) => _setValue(instance, value);
+        public void SetValueOf(object instance, object? value) => _setValue(instance, value);
     }
 }

@@ -17,6 +17,6 @@
         /// <param name="descriptor">The descriptor.</param>
         /// <param name="handleEntryReadError">The handle entry read error func.</param>
         /// <returns>IFlatFileEngine.</returns>
-        IFlatFileEngine GetEngine(TDescriptor descriptor, FileReadErrorHandler handleEntryReadError = null);
+        IFlatFileEngine GetEngine(TDescriptor descriptor, FileReadErrorHandler? handleEntryReadError = null);
     }
 }

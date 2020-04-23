@@ -17,7 +17,7 @@
         /// <param name="stream">The stream.</param>
         /// <param name="entries">The records to write.</param>
         /// <param name="cancellationToken">Cancels writing a file.</param>
-        Task WriteAsync<TEntity>(Stream stream, IEnumerable<TEntity> entries, CancellationToken cancellationToken = default) where TEntity : class, new();
+        Task WriteAsync<TEntity>(Stream stream, IEnumerable<TEntity> entries, CancellationToken cancellationToken = default) where TEntity : notnull, new();
 
         /// <summary>
         /// Writes a record to the specified text writer.
@@ -26,6 +26,6 @@
         /// <param name="writer">The text writer.</param>
         /// <param name="entries">The records to write.</param>
         /// <param name="cancellationToken">Cancels writing a file.</param>
-        Task WriteAsync<TEntity>(TextWriter writer, IEnumerable<TEntity> entries, CancellationToken cancellationToken = default) where TEntity : class, new();
+        Task WriteAsync<TEntity>(TextWriter writer, IEnumerable<TEntity> entries, CancellationToken cancellationToken = default) where TEntity : notnull, new();
     }
 }

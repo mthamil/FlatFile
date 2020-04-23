@@ -36,7 +36,7 @@ namespace FluentFiles.Tests.Core
             _fieldSettings = new FixedFieldSettings(_member);
         }
 
-        private MemberInfo MemberOf<T, V>(T instance, Expression<Func<T, V>> memberAccess) => memberAccess.GetMemberInfo();
+        private MemberInfo MemberOf<T, V>(T _, Expression<Func<T, V>> memberAccess) => memberAccess.GetMemberInfo();
 
         [Fact]
         public void OrderedFieldsShouldContainsOneItemAfterAdd()

@@ -32,7 +32,7 @@ namespace FluentFiles.FixedLength.Implementation
             foreach (var field in Layout.Fields)
             {
                 var fieldValueFromLine = GetValueFromLine(line, linePosition, field);
-                object convertedFieldValue = GetFieldValueFromString(field, fieldValueFromLine);
+                object? convertedFieldValue = GetFieldValueFromString(field, fieldValueFromLine);
                 field.SetValueOf(entity, convertedFieldValue);
                 linePosition += field.Length;
             }

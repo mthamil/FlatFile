@@ -19,7 +19,7 @@ namespace FluentFiles.Core.Base
         /// Initializes a new instance of <see cref="FlatFileEngine{TFieldSettings, TLayoutDescriptor}"/>.
         /// </summary>
         /// <param name="handleEntryReadError">The file read error handler.</param>
-        protected FlatFileEngine(FileReadErrorHandler handleEntryReadError = null)
+        protected FlatFileEngine(FileReadErrorHandler? handleEntryReadError = null)
             : base(handleEntryReadError)
         {
         }

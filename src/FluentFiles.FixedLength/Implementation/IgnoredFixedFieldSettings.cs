@@ -17,20 +17,20 @@
         public int Length { get; }
         public string UniqueKey { get; }
         public bool IsNullable { get; } = false;
-        public string NullValue { get; } = null;
-        public IFieldValueConverter Converter { get; } = null;
+        public string? NullValue { get; } = null;
+        public IFieldValueConverter? Converter { get; } = null;
         public bool PadLeft { get; } = false;
         public char PaddingChar { get; } = default;
 
-        public Func<char, int, bool> SkipWhile { get; } = null;
-        public Func<char, int, bool> TakeUntil { get; } = null;
+        public Func<char, int, bool>? SkipWhile { get; } = null;
+        public Func<char, int, bool>? TakeUntil { get; } = null;
 
         public bool TruncateIfExceedFieldLength { get; } = false;
-        public Func<string, string> StringNormalizer { get; } = null;
+        public Func<string, string>? StringNormalizer { get; } = null;
         public Type Type { get; } = typeof(string);
-        public MemberInfo Member { get; } = null;
+        public MemberInfo Member => throw new NotSupportedException("Ignored fields have no member mapped.");
 
-        public object GetValueOf(object instance) => throw new NotSupportedException("Cannot use a fixed width layout with an ignored section for writing.");
-        public void SetValueOf(object instance, object value) { /* no-op */ }
+        public object? GetValueOf(object instance) => throw new NotSupportedException("Cannot use a fixed width layout with an ignored section for writing.");
+        public void SetValueOf(object instance, object? value) { /* no-op */ }
     }
 }

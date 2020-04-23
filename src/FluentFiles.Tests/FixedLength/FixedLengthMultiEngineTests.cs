@@ -60,7 +60,7 @@ D20150323Another Description ";
         public async Task ReadShouldStopOnCancellation()
         {
             // Arrange.
-            var tcs = new CancellationTokenSource();
+            using var tcs = new CancellationTokenSource();
 
             var engine = CreateEngine((f, line, number) =>
             {

@@ -1,10 +1,9 @@
-using System.Collections.Generic;
-using FluentFiles.Core.Base;
-
 namespace FluentFiles.FixedLength.Implementation
 {
     using System;
+    using System.Collections.Generic;
     using FluentFiles.Core;
+    using FluentFiles.Core.Base;
 
     /// <summary>
     /// Class FixedLengthFileEngineFactory.
@@ -43,7 +42,7 @@ namespace FluentFiles.FixedLength.Implementation
         /// <returns>IFlatFileEngine.</returns>
         public IFlatFileEngine GetEngine(
             IFixedLengthLayoutDescriptor descriptor,
-            FileReadErrorHandler handleEntryReadError = null)
+            FileReadErrorHandler? handleEntryReadError = null)
         {
             return new FixedLengthFileEngine(
                 descriptor,
@@ -63,8 +62,8 @@ namespace FluentFiles.FixedLength.Implementation
         public IFlatFileMultiEngine GetEngine(
             IEnumerable<IFixedLengthLayoutDescriptor> layoutDescriptors,
             Func<string, int, Type> typeSelectorFunc,
-            FileReadErrorHandler handleEntryReadError = null,
-            IMasterDetailStrategy masterDetailStrategy = null)
+            FileReadErrorHandler? handleEntryReadError = null,
+            IMasterDetailStrategy? masterDetailStrategy = null)
         {
             return new FixedLengthFileMultiEngine(
                 layoutDescriptors,

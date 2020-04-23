@@ -19,13 +19,13 @@
         /// <summary>
         /// Handles file read errors.
         /// </summary>
-        protected FileReadErrorHandler HandleEntryReadError { get; }
+        protected FileReadErrorHandler? HandleEntryReadError { get; }
 
         /// <summary>
         /// Initializes a new instance of <see cref="FileEngineCore{TFieldSettings, TLayoutDescriptor}"/>.
         /// </summary>
         /// <param name="handleEntryReadError">The file read error handler.</param>
-        protected FileEngineCore(FileReadErrorHandler handleEntryReadError)
+        protected FileEngineCore(FileReadErrorHandler? handleEntryReadError)
         {
             HandleEntryReadError = handleEntryReadError;
         }
@@ -65,7 +65,8 @@
         /// <param name="lineNumber">The line number.</param>
         /// <param name="entity">The entity.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        protected virtual bool TryParseLine<TEntity>(string line, int lineNumber, ref TEntity entity) where TEntity : class, new()
+        protected virtual bool TryParseLine<TEntity>(string line, int lineNumber, ref TEntity entity) 
+            where TEntity : notnull, new()
         {
             var layoutDescriptor = GetLayoutDescriptor(entity.GetType());
             var parser = GetLineParser(layoutDescriptor);
@@ -81,7 +82,8 @@
         /// <param name="stream">The stream.</param>
         /// <param name="entries">The records to write.</param>
         /// <param name="cancellationToken">Cancels writing a file.</param>
-        public virtual Task WriteAsync<TEntity>(Stream stream, IEnumerable<TEntity> entries, CancellationToken cancellationToken = default) where TEntity : class, new()
+        public virtual Task WriteAsync<TEntity>(Stream stream, IEnumerable<TEntity> entries, CancellationToken cancellationToken = default) 
+            where TEntity : notnull, new()
         {
             var writer = new StreamWriter(stream);
             return WriteAsync(writer, entries, cancellationToken);
@@ -94,7 +96,8 @@
         /// <param name="writer">The text writer.</param>
         /// <param name="entries">The records to write.</param>
         /// <param name="cancellationToken">Cancels writing a file.</param>
-        public async Task WriteAsync<TEntity>(TextWriter writer, IEnumerable<TEntity> entries, CancellationToken cancellationToken = default) where TEntity : class, new()
+        public async Task WriteAsync<TEntity>(TextWriter writer, IEnumerable<TEntity> entries, CancellationToken cancellationToken = default) 
+            where TEntity : notnull, new()
         {
             await WriteHeaderAsync(writer).ConfigureAwait(false);
 
@@ -121,6 +124,7 @@
         /// <param name="lineNumber">The line number.</param>
         /// <param name="entity">The entity.</param>
         protected virtual Task WriteEntryAsync<TEntity>(TextWriter writer, int lineNumber, TEntity entity)
+            where TEntity : notnull
         {
             var layoutDescriptor = GetLayoutDescriptor(entity.GetType());
             var builder = GetLineBuilder(layoutDescriptor);

@@ -44,7 +44,7 @@
         /// <returns>IFlatFileEngine.</returns>
         public IFlatFileEngine GetEngine(
             IDelimitedLayoutDescriptor descriptor,
-            FileReadErrorHandler handleEntryReadError = null)
+            FileReadErrorHandler? handleEntryReadError = null)
         {
             return new DelimitedFileEngine(
                 descriptor,
@@ -64,8 +64,8 @@
         public IFlatFileMultiEngine GetEngine(
             IEnumerable<IDelimitedLayoutDescriptor> layoutDescriptors,
             Func<string, int, Type> typeSelectorFunc,
-            FileReadErrorHandler handleEntryReadError = null,
-            IMasterDetailStrategy masterDetailStrategy = null)
+            FileReadErrorHandler? handleEntryReadError = null,
+            IMasterDetailStrategy? masterDetailStrategy = null)
         {
             return new DelimitedFileMultiEngine(
                 layoutDescriptors,

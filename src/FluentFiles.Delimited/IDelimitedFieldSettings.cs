@@ -10,7 +10,7 @@ namespace FluentFiles.Delimited
         /// <summary>
         /// The name to use when writing a field's header.
         /// </summary>
-        string Name { get; set; }
+        string? Name { get; set; }
     }
 
     /// <summary>
