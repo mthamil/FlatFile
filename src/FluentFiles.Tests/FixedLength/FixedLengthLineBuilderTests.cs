@@ -1,14 +1,14 @@
 namespace FluentFiles.Tests.FixedLength
 {
+    using System;
+    using System.Globalization;
+    using Xunit;
     using FluentAssertions;
     using FluentFiles.Core.Conversion;
     using FluentFiles.FixedLength;
     using FluentFiles.FixedLength.Implementation;
     using FluentFiles.Tests.Base.Entities;
-    using System;
-    using System.Globalization;
-    using Xunit;
-
+    
     public class FixedLengthLineBuilderTests
     {
         private readonly FixedLengthLineBuilder builder;
@@ -66,6 +66,30 @@ namespace FluentFiles.Tests.FixedLength
             var line = builder.BuildLine(entry);
 
             line.Should().Be("BEEF");
+        }
+
+        [Fact]
+        public void BuilderShouldFillIgnoredFieldWithSpacesByDefault()
+        {
+            layout.Ignore(5);
+
+            var entry = new TestObject();
+
+            var line = builder.BuildLine(entry);
+
+            line.Should().Be("     ");
+        }
+
+        [Fact]
+        public void BuilderShouldFillIgnoredFieldWithSelectedCharacter()
+        {
+            layout.Ignore(4, c => c.FillWith('0'));
+
+            var entry = new TestObject();
+
+            var line = builder.BuildLine(entry);
+
+            line.Should().Be("0000");
         }
 
         class IdHexConverter : ConverterBase<int>

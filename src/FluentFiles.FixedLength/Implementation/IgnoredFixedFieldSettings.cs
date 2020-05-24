@@ -6,9 +6,12 @@
 
     internal class IgnoredFixedFieldSettings : IFixedFieldSettingsContainer
     {
-        public IgnoredFixedFieldSettings(int length)
+        private readonly char _filler;
+
+        public IgnoredFixedFieldSettings(int length, char filler)
         {
             Length = length;
+            _filler = filler;
             UniqueKey = Guid.NewGuid().ToString();
         }
         
@@ -30,7 +33,7 @@
         public Type Type { get; } = typeof(string);
         public MemberInfo Member => throw new NotSupportedException("Ignored fields have no member mapped.");
 
-        public object? GetValueOf(object instance) => throw new NotSupportedException("Cannot use a fixed width layout with an ignored section for writing.");
+        public object? GetValueOf(object instance) => new string(_filler, Length);
         public void SetValueOf(object instance, object? value) { /* no-op */ }
     }
 }

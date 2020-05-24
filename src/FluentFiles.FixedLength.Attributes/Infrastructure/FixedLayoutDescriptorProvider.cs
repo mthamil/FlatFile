@@ -28,7 +28,7 @@ namespace FluentFiles.FixedLength.Attributes.Infrastructure
 
             foreach (var ignored in fileMappingType.GetAttributes<IgnoreFixedLengthFieldAttribute>())
             {
-                container.AddOrUpdate(new IgnoredFixedFieldSettings(ignored.Length) { Index = ignored.Index });
+                container.AddOrUpdate(new IgnoredFixedFieldSettings(ignored.Length, ignored.Filler) { Index = ignored.Index });
             }
 
             var members = fileMappingType.GetTypeDescription<FixedLengthFieldAttribute>();
