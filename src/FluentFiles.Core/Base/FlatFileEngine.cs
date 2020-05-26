@@ -58,7 +58,7 @@ namespace FluentFiles.Core.Base
                 if (string.IsNullOrEmpty(line) || string.IsNullOrEmpty(line.Trim())) continue;
 
                 bool ignoreEntry = false;
-                var entry = (TEntity)layoutDescriptor.InstanceFactory();
+                TEntity entry = (TEntity)layoutDescriptor.InstanceFactory();
                 try
                 {
                     if (!TryParseLine(line, lineNumber++, ref entry))

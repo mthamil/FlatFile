@@ -118,7 +118,7 @@
                 if (type == null) continue;
 
                 var layoutDescriptor = GetLayoutDescriptor(type);
-                var entry = layoutDescriptor.InstanceFactory();
+                object entry = layoutDescriptor.InstanceFactory();
 
                 try
                 {
