@@ -6,22 +6,10 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <IncludeSymbols>True</IncludeSymbols>
-    <LangVersion>latest</LangVersion>
-    <Nullable>enable</Nullable>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
   </PropertyGroup>
 
   <PropertyGroup>
     <Description>Provides additional field converters for FluentFiles.</Description>
-    <Owners>mthamil</Owners>
-    <Authors>mthamil;forcewake</Authors>
-    <Copyright>Copyright $([System.DateTime]::Now.Year)</Copyright>
-    <PackageProjectUrl>https://github.com/mthamil/FluentFiles</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/mthamil/FluentFiles</RepositoryUrl>
-    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIcon>icon.png</PackageIcon>
     <PackageTags>FluentFiles;file;text;plain;read;reader;parse;parser;flat;csv;fixed;fixedLength;delimited;convert;conversion;optimized</PackageTags>
   </PropertyGroup>
 

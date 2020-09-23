@@ -1,6 +1,24 @@
 <Project>
 
   <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <Owners>mthamil</Owners>
+    <Authors>mthamil;forcewake</Authors>
+    <Copyright>Copyright $([System.DateTime]::Now.Year)</Copyright>
+    <PackageProjectUrl>https://github.com/mthamil/FluentFiles</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mthamil/FluentFiles</RepositoryUrl>
+    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>icon.png</PackageIcon>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
   
