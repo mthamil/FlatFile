@@ -1,20 +1,21 @@
-using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using FakeItEasy;
-using FluentAssertions;
-using FluentFiles.Core;
-using FluentFiles.Core.Base;
-using FluentFiles.Core.Conversion;
-using FluentFiles.FixedLength;
-using FluentFiles.FixedLength.Attributes;
-using FluentFiles.FixedLength.Implementation;
-using FluentFiles.Tests.Base.Entities;
-using Xunit;
-
 namespace FluentFiles.Tests.FixedLength
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Threading.Tasks;
+    using FakeItEasy;
+    using FluentAssertions;
+    using FluentFiles.Core;
+    using FluentFiles.Core.Base;
+    using FluentFiles.Core.Conversion;
+    using FluentFiles.FixedLength;
+    using FluentFiles.FixedLength.Attributes;
+    using FluentFiles.FixedLength.Implementation;
+    using FluentFiles.Tests.Base.Entities;
+    using Xunit;
+
     public class FixedLengthAttributeMappingIntegrationTests : FixedLengthIntegrationTests
     {
         readonly IFlatFileEngineFactory<IFixedLengthLayoutDescriptor, IFixedFieldSettingsContainer> fileEngineFactory;
@@ -37,8 +38,10 @@ namespace FluentFiles.Tests.FixedLength
             fileEngineFactory = new FixedLengthFileEngineFactory();
         }
 
+        protected override IFlatFileEngine Engine => fileEngineFactory.GetEngine<TestObject>();
+
         [Fact]
-        public void EngineShouldCallTypeConverterWhenConverterAttributeIsPresent()
+        public async Task EngineShouldCallTypeConverterWhenConverterAttributeIsPresent()
         {
             var converter = new StubConverter();
 
@@ -47,7 +50,9 @@ namespace FluentFiles.Tests.FixedLength
             A.CallTo(() => attribute.Length).Returns(1);
             A.CallTo(() => attribute.Converter).Returns(converter);
 
-            var properties = typeof (ConverterTestObject).GetProperties(BindingFlags.Instance | BindingFlags.Public).ToDictionary(info => info.Name);
+            var properties = typeof (ConverterTestObject)
+                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                .ToDictionary(info => info.Name);
 
             var fields = new FieldCollection<IFixedFieldSettingsContainer>();
             fields.AddOrUpdate(new FixedFieldSettings(properties["Foo"], attribute));
@@ -56,20 +61,17 @@ namespace FluentFiles.Tests.FixedLength
 
             var engine = fileEngineFactory.GetEngine(descriptor);
 
-            using (var stream = new MemoryStream())
-            using (var writer = new StreamWriter(stream))
-            {
-                writer.WriteLine("A");
-                writer.Flush();
-                stream.Seek(0, SeekOrigin.Begin);
+            using var stream = new MemoryStream();
+            using var writer = new StreamWriter(stream);
+            await writer.WriteLineAsync("A");
+            await writer.FlushAsync();
+            stream.Seek(0, SeekOrigin.Begin);
 
-                // Capture first result to force enumerable to be iterated
-                var result = engine.Read<ConverterTestObject>(stream).FirstOrDefault();
+            // Capture first result to force enumerable to be iterated
+            using var reader = new StreamReader(stream);
+            var result = await engine.ReadAsync<ConverterTestObject>(reader).FirstOrDefaultAsync();
 
-                result.Foo.Should().Be("foo");
-            }
+            result.Foo.Should().Be("foo");
         }
-
-        protected override IFlatFileEngine Engine { get { return fileEngineFactory.GetEngine<TestObject>(); } }
     }
 }

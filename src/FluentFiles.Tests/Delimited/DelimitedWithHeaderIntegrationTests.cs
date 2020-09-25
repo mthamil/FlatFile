@@ -1,8 +1,8 @@
-using FluentFiles.Delimited.Implementation;
-using FluentFiles.Tests.Base.Entities;
-
 namespace FluentFiles.Tests.Delimited
 {
+    using FluentFiles.Delimited.Implementation;
+    using FluentFiles.Tests.Base.Entities;
+
     public sealed class DelimitedWithHeaderIntegrationTests : DelimitedIntegrationTests
     {
         private const string _testSource = "\"Id\";\"Description\";\"NullableInt\"\r\n" +
@@ -28,9 +28,6 @@ namespace FluentFiles.Tests.Delimited
                 .WithMember(o => o.NullableInt, set => set.AllowNull("=Null"));
         }
 
-        public override string TestSource
-        {
-            get { return _testSource; }
-        }
+        public override string TestSource => _testSource;
     }
 }

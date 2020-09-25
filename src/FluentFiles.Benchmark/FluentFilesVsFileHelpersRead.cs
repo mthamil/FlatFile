@@ -7,10 +7,10 @@ using FluentFiles.Converters;
 using FluentFiles.Core;
 using FluentFiles.FixedLength.Implementation;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FluentFiles.Benchmark
 {
@@ -50,21 +50,17 @@ namespace FluentFiles.Benchmark
         }
 
         [Benchmark(Baseline = true)]
-        public IList<FixedSampleRecord> FileHelpers()
+        public FixedSampleRecord[] FileHelpers()
         {
-            using (var stream = new StringReader(_records))
-            {
-                return _helperEngine.ReadStream(stream);
-            }
+            using var stream = new StringReader(_records);
+            return _helperEngine.ReadStream(stream);
         }
 
         [Benchmark]
-        public IList<FixedSampleRecord> FluentFiles()
+        public ValueTask<FixedSampleRecord[]> FluentFiles()
         {
-            using (var stream = new StringReader(_records))
-            {
-                return _fluentEngine.Read<FixedSampleRecord>(stream).ToArray();
-            }
+            using var stream = new StringReader(_records);
+            return _fluentEngine.ReadAsync<FixedSampleRecord>(stream).ToArrayAsync();
         }
     }
 

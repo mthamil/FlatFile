@@ -5,12 +5,12 @@ namespace FluentFiles.Tests.Base
     using System.IO;
     using System.Linq;
     using System.Text;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentAssertions;
     using FluentFiles.Core;
     using FluentFiles.Tests.Base.Entities;
-    using FluentAssertions;
     using Xunit;
-    using System.Threading.Tasks;
-    using System.Threading;
 
     public abstract class IntegrationTests<TFieldSettings, TConstructor, TLayout>
         where TLayout : ILayout<TestObject, TFieldSettings, TConstructor, TLayout>
@@ -43,9 +43,10 @@ namespace FluentFiles.Tests.Base
         [Fact]
         public virtual Task CountOfTheObjectsAfterWriteReadShouldBeTheSame()
         {
-            return InvokeWriteTest((engine, stream) =>
+            return InvokeWriteTest(async (engine, stream) =>
             {
-                var objectsAfterRead = engine.Read<TestObject>(stream).ToArray();
+                using var reader = new StreamReader(stream);
+                var objectsAfterRead = await engine.ReadAsync<TestObject>(reader).ToListAsync();
 
                 objectsAfterRead.Should().HaveCount(Objects.Count);
             });
@@ -54,9 +55,10 @@ namespace FluentFiles.Tests.Base
         [Fact]
         public virtual Task AllDeclaredPropertiesOfTheObjectsAfterWriteReadShouldBeTheSame()
         {
-            return InvokeWriteTest((engine, stream) =>
+            return InvokeWriteTest(async (engine, stream) =>
             {
-                var objectsAfterRead = engine.Read<TestObject>(stream).ToList();
+                using var reader = new StreamReader(stream);
+                var objectsAfterRead = await engine.ReadAsync<TestObject>(reader).ToListAsync();
 
                 objectsAfterRead.Should().BeEquivalentTo(Objects, options => options.IncludingAllDeclaredProperties());
             });
@@ -65,9 +67,10 @@ namespace FluentFiles.Tests.Base
         [Fact]
         public void AllDeclaredPropertiesOfTheObjectsAfterReadFromSourceShouldBeTheSame()
         {
-            InvokeReadbasedTest((engine, stream) =>
+            InvokeReadTest(async (engine, stream) =>
             {
-                var objectsAfterRead = engine.Read<TestObject>(stream).ToList();
+                using var reader = new StreamReader(stream);
+                var objectsAfterRead = await engine.ReadAsync<TestObject>(reader).ToListAsync();
 
                 objectsAfterRead.Should().BeEquivalentTo(Objects, options => options.IncludingAllDeclaredProperties());
 
@@ -76,23 +79,17 @@ namespace FluentFiles.Tests.Base
 
         protected virtual async Task InvokeWriteTest(Action<IFlatFileEngine, MemoryStream> action, CancellationToken cancellationToken = default)
         {
-            using (var memory = new MemoryStream())
-            {
-                await Engine.WriteAsync(memory, Objects, cancellationToken);
+            using var memory = new MemoryStream();
+            await Engine.WriteAsync(memory, Objects, cancellationToken);
 
-                memory.Seek(0, SeekOrigin.Begin);
-
-                action(Engine, memory);
-            }
+            memory.Seek(0, SeekOrigin.Begin);
+            action(Engine, memory);
         }
 
-        protected virtual void InvokeReadbasedTest(Action<IFlatFileEngine, MemoryStream> action,
-            string textSource)
+        protected virtual void InvokeReadTest(Action<IFlatFileEngine, MemoryStream> action, string textSource)
         {
-            using (var memory = new MemoryStream(Encoding.UTF8.GetBytes(textSource)))
-            {
-                action(Engine, memory);
-            }
+            using var memory = new MemoryStream(Encoding.UTF8.GetBytes(textSource));
+            action(Engine, memory);
         }
     }
 }

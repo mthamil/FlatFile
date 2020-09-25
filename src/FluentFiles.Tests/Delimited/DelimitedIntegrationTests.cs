@@ -1,11 +1,11 @@
 namespace FluentFiles.Tests.Delimited
 {
+    using System;
     using FluentFiles.Core;
     using FluentFiles.Delimited;
     using FluentFiles.Delimited.Implementation;
     using FluentFiles.Tests.Base;
     using FluentFiles.Tests.Base.Entities;
-    using System;
 
     public class DelimitedIntegrationTests :
         IntegrationTests<IDelimitedFieldSettingsContainer, IDelimitedFieldSettingsBuilder, IDelimitedLayout<TestObject>>
@@ -40,19 +40,10 @@ namespace FluentFiles.Tests.Delimited
                 new DelimitedLineParserFactory()));
         }
 
-        protected override IDelimitedLayout<TestObject> Layout
-        {
-            get { return _layout; }
-        }
+        protected override IDelimitedLayout<TestObject> Layout => _layout;
 
-        protected override IFlatFileEngine Engine
-        {
-            get { return _engine.Value; }
-        }
+        protected override IFlatFileEngine Engine => _engine.Value;
 
-        public override string TestSource
-        {
-            get { return _testSource; }
-        }
+        public override string TestSource => _testSource;
     }
 }

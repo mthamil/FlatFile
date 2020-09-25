@@ -33,19 +33,10 @@ namespace FluentFiles.Tests.FixedLength
                 new FixedLengthLineParserFactory());
         }
 
-        protected override IFixedLayout<TestObject> Layout
-        {
-            get { return _layout; }
-        }
+        protected override IFixedLayout<TestObject> Layout => _layout;
 
-        protected override IFlatFileEngine Engine
-        {
-            get { return _engine; }
-        }
+        protected override IFlatFileEngine Engine => _engine;
 
-        public override string TestSource
-        {
-            get { return _testSource; }
-        }
+        public override string TestSource => _testSource;
     }
 }

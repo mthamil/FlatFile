@@ -1,19 +1,20 @@
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using FakeItEasy;
-using FluentFiles.Core.Base;
-using FluentFiles.Core;
-using FluentFiles.Delimited;
-using FluentFiles.Delimited.Attributes;
-using FluentFiles.Delimited.Implementation;
-using FluentFiles.Tests.Base.Entities;
-using Xunit;
-using System;
-using FluentFiles.Core.Conversion;
-
 namespace FluentFiles.Tests.Delimited
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Threading.Tasks;
+    using FakeItEasy;
+    using FluentFiles.Core;
+    using FluentFiles.Core.Base;
+    using FluentFiles.Core.Conversion;
+    using FluentFiles.Delimited;
+    using FluentFiles.Delimited.Attributes;
+    using FluentFiles.Delimited.Implementation;
+    using FluentFiles.Tests.Base.Entities;
+    using Xunit;
+
     public class DelimitedAttributeMappingIntegrationTests : DelimitedIntegrationTests
     {
         private readonly IFlatFileEngineFactory<IDelimitedLayoutDescriptor, IDelimitedFieldSettingsContainer> _fileEngineFactory;
@@ -23,10 +24,7 @@ namespace FluentFiles.Tests.Delimited
             _fileEngineFactory = new DelimitedFileEngineFactory();
         }
 
-        protected override IFlatFileEngine Engine
-        {
-            get { return _fileEngineFactory.GetEngine<TestObject>(); }
-        }
+        protected override IFlatFileEngine Engine => _fileEngineFactory.GetEngine<TestObject>();
 
         class ConverterTestObject
         {
@@ -42,7 +40,7 @@ namespace FluentFiles.Tests.Delimited
         }
 
         [Fact]
-        public void EngineShouldCallTypeConverterWhenConverterAttributeIsPresent()
+        public async Task EngineShouldCallTypeConverterWhenConverterAttributeIsPresent()
         {
             // a converter to convert "A" to "foo"
             var converter = new StubConverter();
@@ -63,16 +61,16 @@ namespace FluentFiles.Tests.Delimited
             var engine = _fileEngineFactory.GetEngine(layout);
 
             // write "A" to the stream and verify it is converted to "foo"
-            using (var stream = new MemoryStream())
-            using (var writer = new StreamWriter(stream))
-            {
-                writer.WriteLine("A");
-                writer.Flush();
-                stream.Seek(0, SeekOrigin.Begin);
-                // Capture first result to force enumerable to be iterated
-                var result = engine.Read<ConverterTestObject>(stream).FirstOrDefault();
-                Assert.Equal("foo", result.Foo);
-            }
+            using var stream = new MemoryStream();
+            using var writer = new StreamWriter(stream);
+            await writer.WriteLineAsync("A");
+            await writer.FlushAsync();
+            stream.Seek(0, SeekOrigin.Begin);
+
+            // Capture first result to force enumerable to be iterated
+            using var reader = new StreamReader(stream);
+            var result = await engine.ReadAsync<ConverterTestObject>(reader).FirstOrDefaultAsync();
+            Assert.Equal("foo", result.Foo);
         }
     }
 }
