@@ -3,8 +3,11 @@ namespace FluentFiles.Core.Base
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Runtime.CompilerServices;
+    using System.Threading;
     using FluentFiles.Core;
     using FluentFiles.Core.Exceptions;
+    using FluentFiles.Core.Extensions;
 
     /// <summary>
     /// Reads and writes file records.
@@ -42,19 +45,30 @@ namespace FluentFiles.Core.Base
         /// <typeparam name="TEntity">The type of record to read.</typeparam>
         /// <param name="reader">The text reader.</param>
         /// <returns>Any records read and parsed from the reader.</returns>
-        public virtual IEnumerable<TEntity> Read<TEntity>(TextReader reader) where TEntity : class, new()
-        {
-            string line;
-            int lineNumber = 0;
+        public virtual IEnumerable<TEntity> Read<TEntity>(TextReader reader) where TEntity : class, new() =>
+            ReadAsync<TEntity>(reader).ToEnumerable();
 
+        /// <summary>
+        /// Reads records from a text reader asynchronously.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of record to read.</typeparam>
+        /// <param name="reader">The text reader.</param>
+        /// <param name="cancellationToken">Can be used to cancel the read operation.</param>
+        /// <returns>The records read and parsed from the reader.</returns>
+        public async IAsyncEnumerable<TEntity> ReadAsync<TEntity>(TextReader reader, [EnumeratorCancellation] CancellationToken cancellationToken = default) where TEntity : class, new()
+        {
             var layoutDescriptor = GetLayoutDescriptor(typeof(TEntity));
             if (layoutDescriptor.HasHeader)
             {
                 ProcessHeader(reader);
             }
 
-            while ((line = reader.ReadLine()) != null)
+            string line;
+            int lineNumber = 0;
+            while ((line = await reader.ReadLineAsync().ConfigureAwait(false)) != null)
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 if (string.IsNullOrEmpty(line) || string.IsNullOrEmpty(line.Trim())) continue;
 
                 bool ignoreEntry = false;
@@ -68,12 +82,7 @@ namespace FluentFiles.Core.Base
                 }
                 catch (Exception ex)
                 {
-                    if (HandleEntryReadError == null)
-                    {
-                        throw;
-                    }
-
-                    if (!HandleEntryReadError(new FlatFileErrorContext(line, lineNumber, ex)))
+                    if (HandleEntryReadError == null || !HandleEntryReadError(new FlatFileErrorContext(line, lineNumber, ex)))
                     {
                         throw;
                     }
